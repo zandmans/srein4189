@@ -133,9 +133,10 @@ final public class FastMath {
         if (store == null) {
             store = new Vector3f();
         }
-        store.x = interpolateLinear(scale, startValue.x, endValue.x);
-        store.y = interpolateLinear(scale, startValue.y, endValue.y);
-        store.z = interpolateLinear(scale, startValue.z, endValue.z);
+        /* edited by chris: this broke encapsulation */
+        store.set( interpolateLinear(scale, startValue.getX(), endValue.getX()), 
+        		   interpolateLinear(scale, startValue.getY(), endValue.getY()),
+        		   interpolateLinear(scale, startValue.getZ(), endValue.getZ()) );
         return store;
     }
 
@@ -187,12 +188,10 @@ final public class FastMath {
         if (store == null) {
             store = new Vector3f();
         }
-//        if (scale <= 1f) {
-//            return interpolateLinear(scale, startValue, endValue, store);
-//        }
-        store.x = extrapolateLinear(scale, startValue.x, endValue.x);
-        store.y = extrapolateLinear(scale, startValue.y, endValue.y);
-        store.z = extrapolateLinear(scale, startValue.z, endValue.z);
+        /* edited by chris: this broke encapsulation */
+        store.setX( extrapolateLinear(scale, startValue.getX(), endValue.getX()) );
+        store.setY( extrapolateLinear(scale, startValue.getY(), endValue.getY()) );
+        store.setZ( extrapolateLinear(scale, startValue.getZ(), endValue.getZ()) );
         return store;
     }
 
@@ -257,9 +256,9 @@ final public class FastMath {
         if (store == null) {
             store = new Vector3f();
         }
-        store.x = interpolateCatmullRom(u, T, p0.x, p1.x, p2.x, p3.x);
-        store.y = interpolateCatmullRom(u, T, p0.y, p1.y, p2.y, p3.y);
-        store.z = interpolateCatmullRom(u, T, p0.z, p1.z, p2.z, p3.z);
+        store.setX( interpolateCatmullRom(u, T, p0.getX(), p1.getX(), p2.getX(), p3.getX()) );
+        store.setY( interpolateCatmullRom(u, T, p0.getY(), p1.getY(), p2.getY(), p3.getY()) );
+        store.setZ( interpolateCatmullRom(u, T, p0.getZ(), p1.getZ(), p2.getZ(), p3.getZ()) );
         return store;
     }
 
@@ -328,9 +327,9 @@ final public class FastMath {
         if (store == null) {
             store = new Vector3f();
         }
-        store.x = interpolateBezier(u, p0.x, p1.x, p2.x, p3.x);
-        store.y = interpolateBezier(u, p0.y, p1.y, p2.y, p3.y);
-        store.z = interpolateBezier(u, p0.z, p1.z, p2.z, p3.z);
+        store.set( interpolateBezier(u, p0.getX(), p1.getX(), p2.getX(), p3.getX()),
+        			interpolateBezier(u, p0.getY(), p1.getY(), p2.getY(), p3.getY()),
+        			interpolateBezier(u, p0.getZ(), p1.getZ(), p2.getZ(), p3.getZ()) );
         return store;
     }
 
@@ -690,10 +689,11 @@ final public class FastMath {
      */
     public static int counterClockwise(Vector2f p0, Vector2f p1, Vector2f p2) {
         float dx1, dx2, dy1, dy2;
-        dx1 = p1.x - p0.x;
-        dy1 = p1.y - p0.y;
-        dx2 = p2.x - p0.x;
-        dy2 = p2.y - p0.y;
+        /* edited by chris: this broke encapsulation by directly accessing attributes */
+        dx1 = p1.getX() - p0.getX();
+        dy1 = p1.getY() - p0.getY();
+        dx2 = p2.getX() - p0.getX();
+        dy2 = p2.getY() - p0.getY();
         if (dx1 * dy2 > dy1 * dx2) {
             return 1;
         }
@@ -803,11 +803,11 @@ final public class FastMath {
      */
     public static Vector3f sphericalToCartesian(Vector3f sphereCoords,
             Vector3f store) {
-        store.y = sphereCoords.x * FastMath.sin(sphereCoords.z);
-        float a = sphereCoords.x * FastMath.cos(sphereCoords.z);
-        store.x = a * FastMath.cos(sphereCoords.y);
-        store.z = a * FastMath.sin(sphereCoords.y);
-
+    	/* edited by chris: fixed encapsulation */
+        float a = sphereCoords.getX() * FastMath.cos(sphereCoords.getZ());
+        store.set( a * FastMath.cos(sphereCoords.getY()),
+        		   sphereCoords.getX() * FastMath.sin(sphereCoords.getZ()),
+        		   a * FastMath.sin(sphereCoords.getY()) );
         return store;
     }
 
@@ -818,18 +818,18 @@ final public class FastMath {
      */
     public static Vector3f cartesianToSpherical(Vector3f cartCoords,
             Vector3f store) {
-        float x = cartCoords.x;
+        float x = cartCoords.getX();
         if (x == 0) {
             x = FastMath.FLT_EPSILON;
         }
-        store.x = FastMath.sqrt((x * x)
-                + (cartCoords.y * cartCoords.y)
-                + (cartCoords.z * cartCoords.z));
-        store.y = FastMath.atan(cartCoords.z / x);
+        float storey = FastMath.atan(cartCoords.getZ() / x);
         if (x < 0) {
-            store.y += FastMath.PI;
+            storey += FastMath.PI;
         }
-        store.z = FastMath.asin(cartCoords.y / store.x);
+        float storex = FastMath.sqrt((x * x) 
+	        		+ (cartCoords.getY() * cartCoords.getY()) 
+	        		+ (cartCoords.getZ() * cartCoords.getZ()));
+        store.set( storex, storey, FastMath.asin(cartCoords.getY() / storex) );
         return store;
     }
 
@@ -839,11 +839,10 @@ final public class FastMath {
      */
     public static Vector3f sphericalToCartesianZ(Vector3f sphereCoords,
             Vector3f store) {
-        store.z = sphereCoords.x * FastMath.sin(sphereCoords.z);
-        float a = sphereCoords.x * FastMath.cos(sphereCoords.z);
-        store.x = a * FastMath.cos(sphereCoords.y);
-        store.y = a * FastMath.sin(sphereCoords.y);
-
+        float a = sphereCoords.getX() * FastMath.cos(sphereCoords.getZ());
+        store.set( a * FastMath.cos(sphereCoords.getY()),
+        		   a * FastMath.sin(sphereCoords.getY()),
+        		   sphereCoords.getX() * FastMath.sin(sphereCoords.getZ()) );
         return store;
     }
 
@@ -854,18 +853,18 @@ final public class FastMath {
      */
     public static Vector3f cartesianZToSpherical(Vector3f cartCoords,
             Vector3f store) {
-        float x = cartCoords.x;
+        float x = cartCoords.getX();
         if (x == 0) {
             x = FastMath.FLT_EPSILON;
         }
-        store.x = FastMath.sqrt((x * x)
-                + (cartCoords.y * cartCoords.y)
-                + (cartCoords.z * cartCoords.z));
-        store.z = FastMath.atan(cartCoords.z / x);
+        float storex = FastMath.sqrt((x * x)
+	                + (cartCoords.getY() * cartCoords.getY())
+	                + (cartCoords.getZ() * cartCoords.getZ()));
+        float storez = FastMath.atan(cartCoords.getZ() / x);
         if (x < 0) {
-            store.z += FastMath.PI;
+            storez += FastMath.PI;
         }
-        store.y = FastMath.asin(cartCoords.y / store.x);
+        store.set( storex, FastMath.asin(cartCoords.getY() / store.getX()), storez );
         return store;
     }
 
