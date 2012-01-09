@@ -57,7 +57,7 @@ import java.util.logging.Logger;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public final class Matrix4f implements Savable, Cloneable, java.io.Serializable {
+public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
 
