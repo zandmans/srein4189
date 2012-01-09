@@ -56,11 +56,10 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
     static final long serialVersionUID = 1;
 
     private static final Logger logger = Logger.getLogger(Matrix3f.class.getName());
-    protected float m00, m01, m02;
-    protected float m10, m11, m12;
-    protected float m20, m21, m22;
     public static final Matrix3f ZERO = new Matrix3f(0, 0, 0, 0, 0, 0, 0, 0, 0);
     public static final Matrix3f IDENTITY = new Matrix3f();
+    
+    /* removed floats by Thijs */
 
     /**
      * Constructor instantiates a new <code>Matrix3f</code> object. The
@@ -681,7 +680,7 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      * @return this
      */
     public Matrix3f set(Quaternion quaternion) {
-        return quaternion.toRotationMatrix(this);
+        return (Matrix3f) quaternion.toRotationMatrix(this); /* edited by Thijs */
     }
 
     /**

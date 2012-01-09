@@ -386,51 +386,7 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
      */
     public Matrix3f toRotationMatrix() {
         Matrix3f matrix = new Matrix3f();
-        return toRotationMatrix(matrix);
-    }
-
-    /**
-     * <code>toRotationMatrix</code> converts this quaternion to a rotational
-     * matrix. The result is stored in result.
-     * 
-     * @param result
-     *            The Matrix3f to store the result in.
-     * @return the rotation matrix representation of this quaternion.
-     */
-    public Matrix3f toRotationMatrix(Matrix3f result) {
-
-        float norm = norm();
-        // we explicitly test norm against one here, saving a division
-        // at the cost of a test and branch.  Is it worth it?
-        float s = (norm == 1f) ? 2f : (norm > 0f) ? 2f / norm : 0;
-
-        // compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
-        // will be used 2-4 times each.
-        float xs = x * s;
-        float ys = y * s;
-        float zs = z * s;
-        float xx = x * xs;
-        float xy = x * ys;
-        float xz = x * zs;
-        float xw = w * xs;
-        float yy = y * ys;
-        float yz = y * zs;
-        float yw = w * ys;
-        float zz = z * zs;
-        float zw = w * zs;
-
-        // using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
-        result.m00 = 1 - (yy + zz);
-        result.m01 = (xy - zw);
-        result.m02 = (xz + yw);
-        result.m10 = (xy + zw);
-        result.m11 = 1 - (xx + zz);
-        result.m12 = (yz - xw);
-        result.m20 = (xz - yw);
-        result.m21 = (yz + xw);
-        result.m22 = 1 - (xx + yy);
-
-        return result;
+        return (Matrix3f)toRotationMatrix(matrix);
     }
 
     /**
@@ -442,9 +398,9 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
      *            The Matrix4f to store the result in.
      * @return the rotation matrix representation of this quaternion.
      */
-    public Matrix4f toRotationMatrix(Matrix4f result) {
-
-        float norm = norm();
+    public AbstractMatrix toRotationMatrix(AbstractMatrix result) {
+    	
+    	float norm = norm();
         // we explicitly test norm against one here, saving a division
         // at the cost of a test and branch.  Is it worth it?
         float s = (norm == 1f) ? 2f : (norm > 0f) ? 2f / norm : 0;

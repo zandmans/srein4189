@@ -7,6 +7,10 @@ import java.nio.FloatBuffer;
 
 public abstract class AbstractMatrix {
 
+	public float m00, m01, m02;
+	public float m10, m11, m12;
+	public float m20, m21, m22;
+	
 	public abstract AbstractMatrix adjoint();
 	public abstract float determinant();
 	public abstract FloatBuffer fillFloatBuffer(FloatBuffer fb, boolean columnMajor);

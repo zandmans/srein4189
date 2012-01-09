@@ -62,10 +62,11 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
     static final long serialVersionUID = 1;
 
     private static final Logger logger = Logger.getLogger(Matrix4f.class.getName());
-    public float m00, m01, m02, m03;
-    public float m10, m11, m12, m13;
-    public float m20, m21, m22, m23;
+    
+    /* edited by Thijs */
+    public float m03, m13, m23;
     public float m30, m31, m32, m33;
+    
     public static final Matrix4f ZERO = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     public static final Matrix4f IDENTITY = new Matrix4f();
     
@@ -142,23 +143,34 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         if (null == matrix) {
             loadIdentity();
         } else {
-            m00 = matrix.m00;
-            m01 = matrix.m01;
-            m02 = matrix.m02;
-            m03 = matrix.m03;
-            m10 = matrix.m10;
-            m11 = matrix.m11;
-            m12 = matrix.m12;
-            m13 = matrix.m13;
-            m20 = matrix.m20;
-            m21 = matrix.m21;
-            m22 = matrix.m22;
-            m23 = matrix.m23;
-            m30 = matrix.m30;
-            m31 = matrix.m31;
-            m32 = matrix.m32;
-            m33 = matrix.m33;
+            setContents(matrix); /* added by Thijs */
         }
+    }
+    
+    /**
+     * Set the contents of a given matrix to this matrix
+     * 
+     * @author Thijs Zandvliet
+     * @param matrix
+     */
+    public void setContents(Matrix4f matrix)
+    {
+    	m00 = matrix.m00;
+        m01 = matrix.m01;
+        m02 = matrix.m02;
+        m03 = matrix.m03;
+        m10 = matrix.m10;
+        m11 = matrix.m11;
+        m12 = matrix.m12;
+        m13 = matrix.m13;
+        m20 = matrix.m20;
+        m21 = matrix.m21;
+        m22 = matrix.m22;
+        m23 = matrix.m23;
+        m30 = matrix.m30;
+        m31 = matrix.m31;
+        m32 = matrix.m32;
+        m33 = matrix.m33;
     }
 
     public void fromFrame(Vector3f location, Vector3f direction, Vector3f up, Vector3f left) {
@@ -169,8 +181,6 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         Vector3f f = vars.vect1.set(direction);
         Vector3f s = vars.vect2.set(f).crossLocal(up);
         Vector3f u = vars.vect3.set(s).crossLocal(f);
-//        s.normalizeLocal();
-//        u.normalizeLocal();
 
         m00 = s.x;
         m01 = s.y;
@@ -184,19 +194,6 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         m21 = -f.y;
         m22 = -f.z;
 
-//        m00 = -left.x;
-//        m10 = -left.y;
-//        m20 = -left.z;
-//
-//        m01 = up.x;
-//        m11 = up.y;
-//        m21 = up.z;
-//
-//        m02 = -direction.x;
-//        m12 = -direction.y;
-//        m22 = -direction.z;
-//
-
         Matrix4f transMatrix = vars.tempMat4;
         transMatrix.loadIdentity();
         transMatrix.m03 = -location.x;
@@ -205,10 +202,6 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         this.multLocal(transMatrix);
 
         vars.release();
-
-//        transMatrix.multLocal(this);
-
-//        set(transMatrix);
     }
 
     /**
@@ -565,22 +558,7 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
      *            the matrix to read the value from.
      */
     public Matrix4f set(Matrix4f matrix) {
-        m00 = matrix.m00;
-        m01 = matrix.m01;
-        m02 = matrix.m02;
-        m03 = matrix.m03;
-        m10 = matrix.m10;
-        m11 = matrix.m11;
-        m12 = matrix.m12;
-        m13 = matrix.m13;
-        m20 = matrix.m20;
-        m21 = matrix.m21;
-        m22 = matrix.m22;
-        m23 = matrix.m23;
-        m30 = matrix.m30;
-        m31 = matrix.m31;
-        m32 = matrix.m32;
-        m33 = matrix.m33;
+    	setContents(matrix); /* added by Thijs */
         return this;
     }
 
@@ -738,19 +716,8 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
      *         limit set is not changed).
      */
     public FloatBuffer fillFloatBuffer(FloatBuffer fb, boolean columnMajor) {
-//        if (columnMajor) {
-//            fb.put(m00).put(m10).put(m20).put(m30);
-//            fb.put(m01).put(m11).put(m21).put(m31);
-//            fb.put(m02).put(m12).put(m22).put(m32);
-//            fb.put(m03).put(m13).put(m23).put(m33);
-//        } else {
-//            fb.put(m00).put(m01).put(m02).put(m03);
-//            fb.put(m10).put(m11).put(m12).put(m13);
-//            fb.put(m20).put(m21).put(m22).put(m23);
-//            fb.put(m30).put(m31).put(m32).put(m33);
-//        }
 
-        TempVars vars = TempVars.get();
+    	TempVars vars = TempVars.get();
 
 
         fillFloatArray(vars.matrixWrite, columnMajor);
