@@ -72,4 +72,40 @@ public class Matrix3fTest
 		tm = new Matrix3f(1,2,3,4,5,6,7,8,9.1f);
 		assertFalse( m3f.equals(tm) );
 	}
+	
+	@Test
+	public void testDeterminant(){
+		Matrix3f bla = new Matrix3f(1.5f, 0, 0, 2.5f, -3f, 0, 7, 15.25f, 0.2f);
+		assertEquals(bla.determinant(), -0.9f, 0.000001);
+	}
+	
+	@Test
+	public void testAbsoluteLocal(){
+		Matrix3f bla = new Matrix3f(-1, 2, -3, 4, -5, 6, -7, 8, -9);
+		bla.absoluteLocal();
+		assertEquals(bla.m00, 1, 0.00000001);
+		assertEquals(bla.m01, 2, 0.00000001);
+		assertEquals(bla.m02, 3, 0.00000001);
+		assertEquals(bla.m10, 4, 0.00000001);
+		assertEquals(bla.m11, 5, 0.00000001);
+		assertEquals(bla.m12, 6, 0.00000001);
+		assertEquals(bla.m20, 7, 0.00000001);
+		assertEquals(bla.m21, 8, 0.00000001);
+		assertEquals(bla.m22, 9, 0.00000001);
+	}
+	
+	@Test
+	public void testGetIntInt(){
+		assertEquals(m3f.get(0,0), m3f.m00, 0.00001);
+		assertEquals(m3f.get(0,1), m3f.m01, 0.00001);
+		assertEquals(m3f.get(0,2), m3f.m02, 0.00001);
+		
+		assertEquals(m3f.get(1,0), m3f.m10, 0.00001);
+		assertEquals(m3f.get(1,1), m3f.m11, 0.00001);
+		assertEquals(m3f.get(1,2), m3f.m12, 0.00001);
+		
+		assertEquals(m3f.get(2,0), m3f.m20, 0.00001);
+		assertEquals(m3f.get(2,1), m3f.m21, 0.00001);
+		assertEquals(m3f.get(2,2), m3f.m22, 0.00001);
+	}
 }
