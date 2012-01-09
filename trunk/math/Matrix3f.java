@@ -1329,6 +1329,45 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
         m12 *= scale.z;
         m22 *= scale.z;
     }
+    
+    /**
+     * Scale the matrix so its entries are in [-1,1]. The scaling is applied
+     * only when at least one matrix entry has magnitude larger than 1.
+     * 
+     * @return the max magnitude in this matrix
+     */
+    public float normalizeMax() {
+    	/* edit by chris: moved this method from Eigen3f (feature envy) */
+        float max = FastMath.abs(m00);
+        float abs = FastMath.abs(m01);
+
+        if (abs > max) {
+            max = abs;
+        }
+        abs = FastMath.abs(m02);
+        if (abs > max) {
+            max = abs;
+        }
+        abs = FastMath.abs(m11);
+        if (abs > max) {
+            max = abs;
+        }
+        abs = FastMath.abs(m12);
+        if (abs > max) {
+            max = abs;
+        }
+        abs = FastMath.abs(m22);
+        if (abs > max) {
+            max = abs;
+        }
+
+        if (max > 1f) {
+            float fInvMax = 1f / max;
+            multLocal(fInvMax);
+        }
+
+        return max;
+    }
 
     static boolean equalIdentity(Matrix3f mat) {
         if (Math.abs(mat.m00 - 1) > 1e-4) {
