@@ -108,4 +108,10 @@ public class Matrix3fTest
 		assertEquals(m3f.get(2,1), m3f.m21, 0.00001);
 		assertEquals(m3f.get(2,2), m3f.m22, 0.00001);
 	}
+	
+	@Test
+	public void testIsIdentity(){
+		Matrix3f id = new Matrix3f(); // should default to identity matrix
+		assertTrue(id.isIdentity());
+	}
 }
