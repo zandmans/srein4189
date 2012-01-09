@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public final class Matrix3f implements Savable, Cloneable, java.io.Serializable {
+public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
 
@@ -393,18 +393,9 @@ public final class Matrix3f implements Savable, Cloneable, java.io.Serializable 
      *         limit set is not changed).
      */
     public FloatBuffer fillFloatBuffer(FloatBuffer fb, boolean columnMajor) {
-//        if (columnMajor){
-//            fb.put(m00).put(m10).put(m20);
-//            fb.put(m01).put(m11).put(m21);
-//            fb.put(m02).put(m12).put(m22);
-//        }else{
-//            fb.put(m00).put(m01).put(m02);
-//            fb.put(m10).put(m11).put(m12);
-//            fb.put(m20).put(m21).put(m22);
-//        }
+    	/* edited by chris: code cleanup/comment removal */
 
         TempVars vars = TempVars.get();
-
 
         fillFloatArray(vars.matrixWrite, columnMajor);
         fb.put(vars.matrixWrite, 0, 9);
@@ -868,7 +859,8 @@ public final class Matrix3f implements Savable, Cloneable, java.io.Serializable 
      *            the value to scale by.
      * @return this Matrix3f
      */
-    public Matrix3f multLocal(float scale) {
+    public void multLocal(float scale) {
+    	/* edited by chris: returning void now */
         m00 *= scale;
         m01 *= scale;
         m02 *= scale;
@@ -878,7 +870,6 @@ public final class Matrix3f implements Savable, Cloneable, java.io.Serializable 
         m20 *= scale;
         m21 *= scale;
         m22 *= scale;
-        return this;
     }
 
     /**
