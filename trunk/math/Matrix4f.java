@@ -68,6 +68,10 @@ public final class Matrix4f implements Savable, Cloneable, java.io.Serializable 
     public float m30, m31, m32, m33;
     public static final Matrix4f ZERO = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     public static final Matrix4f IDENTITY = new Matrix4f();
+    
+    /* floats for the calculateLeibniz function, added by Thijs */
+    protected float fA0,fA1,fA2,fA3,fA4,fA5,fB0,fB1,fB2,fB3,fB4,fB5;
+    
 
     /**
      * Constructor instantiates a new <code>Matrix</code> that is set to the
@@ -1433,18 +1437,7 @@ public final class Matrix4f implements Savable, Cloneable, java.io.Serializable 
             store = new Matrix4f();
         }
 
-        float fA0 = m00 * m11 - m01 * m10;
-        float fA1 = m00 * m12 - m02 * m10;
-        float fA2 = m00 * m13 - m03 * m10;
-        float fA3 = m01 * m12 - m02 * m11;
-        float fA4 = m01 * m13 - m03 * m11;
-        float fA5 = m02 * m13 - m03 * m12;
-        float fB0 = m20 * m31 - m21 * m30;
-        float fB1 = m20 * m32 - m22 * m30;
-        float fB2 = m20 * m33 - m23 * m30;
-        float fB3 = m21 * m32 - m22 * m31;
-        float fB4 = m21 * m33 - m23 * m31;
-        float fB5 = m22 * m33 - m23 * m32;
+        calculateLeibniz(); /* added by Thijs */
         float fDet = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
 
         if (FastMath.abs(fDet) <= 0f) {
@@ -1481,18 +1474,7 @@ public final class Matrix4f implements Savable, Cloneable, java.io.Serializable 
      */
     public Matrix4f invertLocal() {
 
-        float fA0 = m00 * m11 - m01 * m10;
-        float fA1 = m00 * m12 - m02 * m10;
-        float fA2 = m00 * m13 - m03 * m10;
-        float fA3 = m01 * m12 - m02 * m11;
-        float fA4 = m01 * m13 - m03 * m11;
-        float fA5 = m02 * m13 - m03 * m12;
-        float fB0 = m20 * m31 - m21 * m30;
-        float fB1 = m20 * m32 - m22 * m30;
-        float fB2 = m20 * m33 - m23 * m30;
-        float fB3 = m21 * m32 - m22 * m31;
-        float fB4 = m21 * m33 - m23 * m31;
-        float fB5 = m22 * m33 - m23 * m32;
+        calculateLeibniz(); /* added by Thijs */
         float fDet = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
 
         if (FastMath.abs(fDet) <= 0f) {
@@ -1587,18 +1569,7 @@ public final class Matrix4f implements Savable, Cloneable, java.io.Serializable 
             store = new Matrix4f();
         }
 
-        float fA0 = m00 * m11 - m01 * m10;
-        float fA1 = m00 * m12 - m02 * m10;
-        float fA2 = m00 * m13 - m03 * m10;
-        float fA3 = m01 * m12 - m02 * m11;
-        float fA4 = m01 * m13 - m03 * m11;
-        float fA5 = m02 * m13 - m03 * m12;
-        float fB0 = m20 * m31 - m21 * m30;
-        float fB1 = m20 * m32 - m22 * m30;
-        float fB2 = m20 * m33 - m23 * m30;
-        float fB3 = m21 * m32 - m22 * m31;
-        float fB4 = m21 * m33 - m23 * m31;
-        float fB5 = m22 * m33 - m23 * m32;
+        calculateLeibniz(); /* added by Thijs */
 
         store.m00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
         store.m10 = -m10 * fB5 + m12 * fB2 - m13 * fB1;
@@ -1626,20 +1597,30 @@ public final class Matrix4f implements Savable, Cloneable, java.io.Serializable 
      * @return the determinate
      */
     public float determinant() {
-        float fA0 = m00 * m11 - m01 * m10;
-        float fA1 = m00 * m12 - m02 * m10;
-        float fA2 = m00 * m13 - m03 * m10;
-        float fA3 = m01 * m12 - m02 * m11;
-        float fA4 = m01 * m13 - m03 * m11;
-        float fA5 = m02 * m13 - m03 * m12;
-        float fB0 = m20 * m31 - m21 * m30;
-        float fB1 = m20 * m32 - m22 * m30;
-        float fB2 = m20 * m33 - m23 * m30;
-        float fB3 = m21 * m32 - m22 * m31;
-        float fB4 = m21 * m33 - m23 * m31;
-        float fB5 = m22 * m33 - m23 * m32;
+    	calculateLeibniz(); /* added by Thijs */
         float fDet = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
         return fDet;
+    }
+    
+    /**
+     * Set the float values for several functions in this class
+     * 
+     * @author Thijs Zandvliet
+     */
+    public void calculateLeibniz()
+    {
+    	fA0 = m00 * m11 - m01 * m10;
+        fA1 = m00 * m12 - m02 * m10;
+        fA2 = m00 * m13 - m03 * m10;
+        fA3 = m01 * m12 - m02 * m11;
+        fA4 = m01 * m13 - m03 * m11;
+        fA5 = m02 * m13 - m03 * m12;
+        fB0 = m20 * m31 - m21 * m30;
+        fB1 = m20 * m32 - m22 * m30;
+        fB2 = m20 * m33 - m23 * m30;
+        fB3 = m21 * m32 - m22 * m31;
+        fB4 = m21 * m33 - m23 * m31;
+        fB5 = m22 * m33 - m23 * m32;
     }
 
     /**
