@@ -520,46 +520,46 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      *            the colum index.
      * @param value
      *            the value for (i, j).
-     * @return this
      */
     @SuppressWarnings("fallthrough")
-    public Matrix3f set(int i, int j, float value) {
+    public void set(int i, int j, float value) {
+    	/* edited by chris: return type void */
         switch (i) {
             case 0:
                 switch (j) {
                     case 0:
                         m00 = value;
-                        return this;
+                        return;
                     case 1:
                         m01 = value;
-                        return this;
+                        return;
                     case 2:
                         m02 = value;
-                        return this;
+                        return;
                 }
             case 1:
                 switch (j) {
                     case 0:
                         m10 = value;
-                        return this;
+                        return;
                     case 1:
                         m11 = value;
-                        return this;
+                        return;
                     case 2:
                         m12 = value;
-                        return this;
+                        return;
                 }
             case 2:
                 switch (j) {
                     case 0:
                         m20 = value;
-                        return this;
+                        return;
                     case 1:
                         m21 = value;
-                        return this;
+                        return;
                     case 2:
                         m22 = value;
-                        return this;
+                        return;
                 }
         }
 
@@ -576,9 +576,9 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      *            the new values of the matrix.
      * @throws JmeException
      *             if the array is not of size 9.
-     * @return this
      */
-    public Matrix3f set(float[][] matrix) {
+    public void set(float[][] matrix) {
+    	/* edited by chris: return type void */
         if (matrix.length != 3 || matrix[0].length != 3) {
             throw new IllegalArgumentException(
                     "Array must be of size 9.");
@@ -593,8 +593,6 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
         m20 = matrix[2][0];
         m21 = matrix[2][1];
         m22 = matrix[2][2];
-
-        return this;
     }
 
     /**
@@ -627,10 +625,10 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      * 
      * @param matrix
      *            the matrix to set the value to.
-     * @return this
      */
-    public Matrix3f set(float[] matrix) {
-        return set(matrix, true);
+    public void set(float[] matrix) {
+    	/* edited by chris: return type void */
+        set(matrix, true);
     }
 
     /**
@@ -641,9 +639,9 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      *            the matrix to set the value to.
      * @param rowMajor
      *            whether the incoming data is in row or column major order.
-     * @return this
      */
-    public Matrix3f set(float[] matrix, boolean rowMajor) {
+    public void set(float[] matrix, boolean rowMajor) {
+    	/* edited by chris: return type void */
         if (matrix.length != 9) {
             throw new IllegalArgumentException(
                     "Array must be of size 9.");
@@ -670,7 +668,6 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
             m21 = matrix[5];
             m22 = matrix[8];
         }
-        return this;
     }
 
     /**
@@ -914,10 +911,7 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      * @return This matrix after transpose
      */
     public Matrix3f transposeLocal() {
-//        float[] tmp = new float[9];
-//        get(tmp, false);
-//        set(tmp, true);
-
+    	/* edited by chris: removed commented code */
         float tmp = m01;
         m01 = m10;
         m10 = tmp;
