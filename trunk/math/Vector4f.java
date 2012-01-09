@@ -48,7 +48,7 @@ import java.util.logging.Logger;
  *
  * @author Maarten Steur
  */
-public final class Vector4f implements Savable, Cloneable, java.io.Serializable {
+public final class Vector4f extends AbstractVector implements Savable, Cloneable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
 

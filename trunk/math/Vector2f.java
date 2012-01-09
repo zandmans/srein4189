@@ -49,7 +49,7 @@ import java.util.logging.Logger;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public final class Vector2f implements Savable, Cloneable, java.io.Serializable {
+public final class Vector2f extends AbstractVector implements Savable, Cloneable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
     private static final Logger logger = Logger.getLogger(Vector2f.class.getName());
@@ -282,6 +282,18 @@ public final class Vector2f implements Savable, Cloneable, java.io.Serializable 
       if (Float.isInfinite(vector.x) ||
           Float.isInfinite(vector.y)) return false;
       return true;
+    }
+
+    /**
+     * Returns true if this vector is a unit vector (length() ~= 1),
+     * returns false otherwise.
+     * 
+     * @return true if this vector is a unit vector (length() ~= 1),
+     * or false otherwise.
+     */
+    public boolean isUnitVector(){
+        float len = length();
+        return 0.99f < len && len < 1.01f;
     }
 
     /**
@@ -757,5 +769,41 @@ public final class Vector2f implements Savable, Cloneable, java.io.Serializable 
         float newY = FastMath.sin(angle) * x + FastMath.cos(angle) * y;
         x = newX;
         y = newY;
+    }
+
+    /**
+     * @param index
+     * @return x value if index == 0 or y value if index == 1
+     * @throws IllegalArgumentException
+     *             if index is not one of 0, 2.
+     */
+    public float get(int index) {
+        switch (index) {
+            case 0:
+                return x;
+            case 1:
+                return y;
+        }
+        throw new IllegalArgumentException("index must be either 0 or 2");
+    }
+	
+    /**
+     * @param index
+     *            which field index in this vector to set.
+     * @param value
+     *            to set to one of x or y.
+     * @throws IllegalArgumentException
+     *             if index is not one of 0, 1.
+     */
+    public void set(int index, float value) {
+        switch (index) {
+            case 0:
+                x = value;
+                return;
+            case 1:
+                y = value;
+                return;
+        }
+        throw new IllegalArgumentException("index must be either 0 or 1");
     }
 }
