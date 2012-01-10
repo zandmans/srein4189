@@ -194,5 +194,61 @@ public class Matrix4fTest
 		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,15.999F);
 		assertFalse( m1.equals(tm) );
 	}
+	
+	@Test
+	public void testGet()
+	{
+		float[] matrix = new float[16];
+		m1.get(matrix,true);
+		
+		assertEquals(matrix[0], 1, 0.00001);
+		assertEquals(matrix[1], 2, 0.00001);
+		assertEquals(matrix[2], 3, 0.00001);
+		assertEquals(matrix[3], 4, 0.00001);
+		assertEquals(matrix[4], 5, 0.00001);
+		assertEquals(matrix[5], 6, 0.00001);
+		assertEquals(matrix[6], 7, 0.00001);
+		assertEquals(matrix[7], 8, 0.00001);
+		assertEquals(matrix[8], 9, 0.00001);
+		assertEquals(matrix[9], 10, 0.00001);
+		assertEquals(matrix[10], 11, 0.00001);
+		assertEquals(matrix[11], 12, 0.00001);
+		assertEquals(matrix[12], 13, 0.00001);
+		assertEquals(matrix[13], 14, 0.00001);
+		assertEquals(matrix[14], 15, 0.00001);
+		assertEquals(matrix[15], 16, 0.00001);
+	}
+	
+	@Test
+	public void testTransposeLocal()
+	{
+		Matrix4f matrix = m1.clone();
+		m1.transposeLocal();
+		
+		assertEquals(m1.m01, matrix.m10, 0.000001);
+		assertEquals(m1.m02, matrix.m20, 0.000001);
+		assertEquals(m1.m03, matrix.m30, 0.000001);
+		assertEquals(m1.m12, matrix.m21, 0.000001);
+		assertEquals(m1.m13, matrix.m31, 0.000001);
+		assertEquals(m1.m23, matrix.m32, 0.000001);
+	}
+	
+	@Test
+	public void testSetInverseRotationDegrees()
+	{
+		m1.setInverseRotationDegrees(new float[]{1,1,1});
+		
+		assertEquals(m1.m00, 0.5382521, 0.000001);
+		assertEquals(m1.m01, -0.1597702, 0.000001);
+		assertEquals(m1.m02, 0.8275011, 0.000001);
+		
+		assertEquals(m1.m10, 0.4985346, 0.000001);
+		assertEquals(m1.m11, 0.8520191, 0.000001);
+		assertEquals(m1.m12, -0.1597702, 0.000001);
+		
+		assertEquals(m1.m20, -0.6795203, 0.000001);
+		assertEquals(m1.m21, 0.4985346, 0.000001);
+		assertEquals(m1.m22, 0.5382521, 0.000001);
+	}
 
 }

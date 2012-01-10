@@ -416,63 +416,31 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         switch (i) {
             case 0:
                 switch (j) {
-                    case 0:
-                        m00 = value;
-                        return;
-                    case 1:
-                        m01 = value;
-                        return;
-                    case 2:
-                        m02 = value;
-                        return;
-                    case 3:
-                        m03 = value;
-                        return;
+                    case 0: m00 = value; return;
+                    case 1: m01 = value; return;
+                    case 2: m02 = value; return;
+                    case 3: m03 = value; return;
                 }
             case 1:
                 switch (j) {
-                    case 0:
-                        m10 = value;
-                        return;
-                    case 1:
-                        m11 = value;
-                        return;
-                    case 2:
-                        m12 = value;
-                        return;
-                    case 3:
-                        m13 = value;
-                        return;
+                    case 0: m10 = value; return;
+                    case 1: m11 = value; return;
+                    case 2: m12 = value; return;
+                    case 3: m13 = value; return;
                 }
             case 2:
                 switch (j) {
-                    case 0:
-                        m20 = value;
-                        return;
-                    case 1:
-                        m21 = value;
-                        return;
-                    case 2:
-                        m22 = value;
-                        return;
-                    case 3:
-                        m23 = value;
-                        return;
+                    case 0: m20 = value; return;
+                    case 1: m21 = value; return;
+                    case 2: m22 = value; return;
+                    case 3: m23 = value; return;
                 }
             case 3:
                 switch (j) {
-                    case 0:
-                        m30 = value;
-                        return;
-                    case 1:
-                        m31 = value;
-                        return;
-                    case 2:
-                        m32 = value;
-                        return;
-                    case 3:
-                        m33 = value;
-                        return;
+                    case 0: m30 = value; return;
+                    case 1: m31 = value; return;
+                    case 2: m32 = value; return;
+                    case 3: m33 = value; return;
                 }
         }
 
@@ -802,14 +770,12 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         if (parallel) {
             // scale
             m00 = 2.0f / (right - left);
-            //m11 = 2.0f / (bottom - top);
             m11 = 2.0f / (top - bottom);
             m22 = -2.0f / (far - near);
             m33 = 1f;
 
             // translation
             m03 = -(right + left) / (right - left);
-            //m31 = -(bottom + top) / (bottom - top);
             m13 = -(top + bottom) / (top - bottom);
             m23 = -(far + near) / (far - near);
         } else {
@@ -1442,9 +1408,7 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         m23 = position.z;
 
         // No projection term
-        m30 = 0;
-        m31 = 0;
-        m32 = 0;
+        m30 = m31 = m32 = 0; /* edited by Thijs */
         m33 = 1;
     }
 
@@ -1716,7 +1680,6 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         sr = FastMath.sin(angle);
         cr = FastMath.cos(angle);
 
-        // matrix = (Z * Y) * X
         m00 = cp * cy;
         m10 = cp * sy;
         m20 = -sp;
@@ -1795,10 +1758,12 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
             throw new IllegalArgumentException(
                     "Angles must be of size 3.");
         }
-        float vec[] = new float[3];
-        vec[0] = (angles[0] * FastMath.RAD_TO_DEG);
-        vec[1] = (angles[1] * FastMath.RAD_TO_DEG);
-        vec[2] = (angles[2] * FastMath.RAD_TO_DEG);
+        float vec[] = new float[] { 
+        	(angles[0] * FastMath.RAD_TO_DEG),
+        	(angles[1] * FastMath.RAD_TO_DEG),
+        	(angles[2] * FastMath.RAD_TO_DEG)
+        };
+        
         setInverseRotationRadians(vec);
     }
 

@@ -22,5 +22,17 @@ public class ColorRGBATest {
 		assertFalse(c1.equals(c6));
 		assertFalse(c1.equals("Testing is important!"));
 	}
+	
+	@Test
+	public void testClamp()
+	{
+		ColorRGBA c1 = new ColorRGBA(0.5f,0.5f,0.5f,1f);
+		c1.clamp();
+		
+		assertTrue(c1.a >= 0 && c1.a <= 1);
+		assertTrue(c1.b >= 0 && c1.b <= 1);
+		assertTrue(c1.g >= 0 && c1.g <= 1);
+		assertTrue(c1.r >= 0 && c1.r <= 1);
+	}
 
 }

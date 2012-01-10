@@ -196,10 +196,7 @@ public final class ColorRGBA implements Savable, Cloneable, java.io.Serializable
      */
     public ColorRGBA set(ColorRGBA rgba) {
         if (rgba == null) {
-            r = 0;
-            g = 0;
-            b = 0;
-            a = 0;
+        	r = g = b = a = 0; /* edited by Thijs: Shortened the code */
         } else {
             r = rgba.r;
             g = rgba.g;
@@ -214,31 +211,13 @@ public final class ColorRGBA implements Savable, Cloneable, java.io.Serializable
      * are less than 0 they are set to zero. If any are more than 1 they are
      * set to one.
      *
+     *	Edited by Thijs: Shortened the code
      */
     public void clamp() {
-        if (r < 0) {
-            r = 0;
-        } else if (r > 1) {
-            r = 1;
-        }
-
-        if (g < 0) {
-            g = 0;
-        } else if (g > 1) {
-            g = 1;
-        }
-
-        if (b < 0) {
-            b = 0;
-        } else if (b > 1) {
-            b = 1;
-        }
-
-        if (a < 0) {
-            a = 0;
-        } else if (a > 1) {
-            a = 1;
-        }
+        if (r < 0) r = 0; else if (r > 1) r = 1;
+        if (g < 0) g = 0; else if (g > 1) g = 1;
+        if (b < 0) b = 0; else if (b > 1) b = 1;
+        if (a < 0) a = 0; else if (a > 1) a = 1;
     }
 
     /**
