@@ -17,35 +17,6 @@ public class CurveAndSurfaceMath {
 	private CurveAndSurfaceMath() {}
 	
 	/**
-	 * This method interpolates tha data for the nurbs curve.
-	 * @param u
-	 *            the u value
-	 * @param nurbSpline
-	 *            the nurbs spline definition
-	 * @param store
-	 *            the resulting point in 3D space
-	 */
-	public static void interpolateNurbs(float u, Spline nurbSpline, Vector3f store) {
-		if (nurbSpline.getType() != SplineType.Nurb) {
-			throw new IllegalArgumentException("Given spline is not of a NURB type!");
-		}
-		List<Vector3f> controlPoints = nurbSpline.getControlPoints();
-		float[] weights = nurbSpline.getWeights();
-		List<Float> knots = nurbSpline.getKnots();
-		int controlPointAmount = controlPoints.size();
-
-		store.set(Vector3f.ZERO);
-		float delimeter = 0;
-		for (int i = 0; i < controlPointAmount; ++i) {
-			float val = weights[i] * CurveAndSurfaceMath.computeBaseFunctionValue(i, nurbSpline.getBasisFunctionDegree(), u, knots);
-			store.addLocal(nurbSpline.getControlPoints().get(i)
-					.mult(val));
-			delimeter += val;
-		}
-		store.divideLocal(delimeter);
-	}
-
-	/**
 	 * This method interpolates tha data for the nurbs surface.
 	 * 
 	 * @param u
@@ -121,7 +92,7 @@ public class CurveAndSurfaceMath {
 	 *            the knots' values
 	 * @return the base function value
 	 */
-	private static float computeBaseFunctionValue(int i, int k, float t, List<Float> knots) {
+	protected static float computeBaseFunctionValue(int i, int k, float t, List<Float> knots) {
 		if (k == 1) {
 			return knots.get(i) <= t && t < knots.get(i + 1) ? 1.0f : 0.0f;
 		} else {
