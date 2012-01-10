@@ -1985,58 +1985,26 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         }
 
         Matrix4f comp = (Matrix4f) o;
-        if (Float.compare(m00, comp.m00) != 0) {
-            return false;
-        }
-        if (Float.compare(m01, comp.m01) != 0) {
-            return false;
-        }
-        if (Float.compare(m02, comp.m02) != 0) {
-            return false;
-        }
-        if (Float.compare(m03, comp.m03) != 0) {
-            return false;
-        }
+        /* chris: made into 1 if statement since Java evaluates lazy anyway */
 
-        if (Float.compare(m10, comp.m10) != 0) {
-            return false;
-        }
-        if (Float.compare(m11, comp.m11) != 0) {
-            return false;
-        }
-        if (Float.compare(m12, comp.m12) != 0) {
-            return false;
-        }
-        if (Float.compare(m13, comp.m13) != 0) {
-            return false;
-        }
-
-        if (Float.compare(m20, comp.m20) != 0) {
-            return false;
-        }
-        if (Float.compare(m21, comp.m21) != 0) {
-            return false;
-        }
-        if (Float.compare(m22, comp.m22) != 0) {
-            return false;
-        }
-        if (Float.compare(m23, comp.m23) != 0) {
-            return false;
-        }
-
-        if (Float.compare(m30, comp.m30) != 0) {
-            return false;
-        }
-        if (Float.compare(m31, comp.m31) != 0) {
-            return false;
-        }
-        if (Float.compare(m32, comp.m32) != 0) {
-            return false;
-        }
-        if (Float.compare(m33, comp.m33) != 0) {
-            return false;
-        }
-
+        if( (Float.compare(m00, comp.m00) != 0) ||
+    		(Float.compare(m01, comp.m01) != 0) ||
+    		(Float.compare(m02, comp.m02) != 0) ||
+    		(Float.compare(m03, comp.m03) != 0) ||
+    		(Float.compare(m10, comp.m10) != 0) ||
+    		(Float.compare(m11, comp.m11) != 0) ||
+    		(Float.compare(m12, comp.m12) != 0) ||
+    		(Float.compare(m13, comp.m13) != 0) ||
+    		(Float.compare(m20, comp.m20) != 0) ||
+    		(Float.compare(m21, comp.m21) != 0) ||
+    		(Float.compare(m22, comp.m22) != 0) ||
+    		(Float.compare(m23, comp.m23) != 0) ||
+    		(Float.compare(m30, comp.m30) != 0) ||
+    		(Float.compare(m31, comp.m31) != 0) ||
+    		(Float.compare(m32, comp.m32) != 0) ||
+    		(Float.compare(m33, comp.m33) != 0) )
+        { return false; }
+        
         return true;
     }
 

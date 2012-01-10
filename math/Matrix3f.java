@@ -1131,36 +1131,19 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
         }
 
         Matrix3f comp = (Matrix3f) o;
-        if (Float.compare(m00, comp.m00) != 0) {
-            return false;
+        /* chris: made into 1 if statement since Java evaluates lazy anyway */
+        if( (Float.compare(m00, comp.m00) != 0) ||
+    		(Float.compare(m01, comp.m01) != 0) ||
+    		(Float.compare(m02, comp.m02) != 0) ||
+    		(Float.compare(m10, comp.m10) != 0) ||
+    		(Float.compare(m11, comp.m11) != 0) ||
+    		(Float.compare(m12, comp.m12) != 0) ||
+    		(Float.compare(m20, comp.m20) != 0) ||
+    		(Float.compare(m21, comp.m21) != 0) ||
+    		(Float.compare(m22, comp.m22) != 0) )
+        {
+        	return false;
         }
-        if (Float.compare(m01, comp.m01) != 0) {
-            return false;
-        }
-        if (Float.compare(m02, comp.m02) != 0) {
-            return false;
-        }
-
-        if (Float.compare(m10, comp.m10) != 0) {
-            return false;
-        }
-        if (Float.compare(m11, comp.m11) != 0) {
-            return false;
-        }
-        if (Float.compare(m12, comp.m12) != 0) {
-            return false;
-        }
-
-        if (Float.compare(m20, comp.m20) != 0) {
-            return false;
-        }
-        if (Float.compare(m21, comp.m21) != 0) {
-            return false;
-        }
-        if (Float.compare(m22, comp.m22) != 0) {
-            return false;
-        }
-
         return true;
     }
 

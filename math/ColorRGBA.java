@@ -436,18 +436,14 @@ public final class ColorRGBA implements Savable, Cloneable, java.io.Serializable
         }
 
         ColorRGBA comp = (ColorRGBA) o;
-        if (Float.compare(r, comp.r) != 0) {
-            return false;
-        }
-        if (Float.compare(g, comp.g) != 0) {
-            return false;
-        }
-        if (Float.compare(b, comp.b) != 0) {
-            return false;
-        }
-        if (Float.compare(a, comp.a) != 0) {
-            return false;
-        }
+        /* chris: made into 1 if statement since Java evaluates lazy anyway */
+        if( (Float.compare(r, comp.r) != 0) ||
+    		(Float.compare(g, comp.g) != 0) ||
+    		(Float.compare(b, comp.b) != 0) ||
+    		(Float.compare(a, comp.a) != 0) )
+        { 
+        	return false; 
+    	}
         return true;
     }
 
