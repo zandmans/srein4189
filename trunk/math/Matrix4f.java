@@ -1411,22 +1411,8 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
             throw new ArithmeticException("This matrix cannot be inverted");
         }
 
-        store.m00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
-        store.m10 = -m10 * fB5 + m12 * fB2 - m13 * fB1;
-        store.m20 = +m10 * fB4 - m11 * fB2 + m13 * fB0;
-        store.m30 = -m10 * fB3 + m11 * fB1 - m12 * fB0;
-        store.m01 = -m01 * fB5 + m02 * fB4 - m03 * fB3;
-        store.m11 = +m00 * fB5 - m02 * fB2 + m03 * fB1;
-        store.m21 = -m00 * fB4 + m01 * fB2 - m03 * fB0;
-        store.m31 = +m00 * fB3 - m01 * fB1 + m02 * fB0;
-        store.m02 = +m31 * fA5 - m32 * fA4 + m33 * fA3;
-        store.m12 = -m30 * fA5 + m32 * fA2 - m33 * fA1;
-        store.m22 = +m30 * fA4 - m31 * fA2 + m33 * fA0;
-        store.m32 = -m30 * fA3 + m31 * fA1 - m32 * fA0;
-        store.m03 = -m21 * fA5 + m22 * fA4 - m23 * fA3;
-        store.m13 = +m20 * fA5 - m22 * fA2 + m23 * fA1;
-        store.m23 = -m20 * fA4 + m21 * fA2 - m23 * fA0;
-        store.m33 = +m20 * fA3 - m21 * fA1 + m22 * fA0;
+        /* added by Thijs */
+        store = setMatrixContents(store);
 
         float fInvDet = 1.0f / fDet;
         store.multLocal(fInvDet);
@@ -1447,40 +1433,16 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         if (FastMath.abs(fDet) <= 0f) {
             return zero();
         }
+        
+        /* edited by Thijs */
+        Matrix4f m1 = new Matrix4f();
+        m1 = setMatrixContents(m1);
 
-        float f00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
-        float f10 = -m10 * fB5 + m12 * fB2 - m13 * fB1;
-        float f20 = +m10 * fB4 - m11 * fB2 + m13 * fB0;
-        float f30 = -m10 * fB3 + m11 * fB1 - m12 * fB0;
-        float f01 = -m01 * fB5 + m02 * fB4 - m03 * fB3;
-        float f11 = +m00 * fB5 - m02 * fB2 + m03 * fB1;
-        float f21 = -m00 * fB4 + m01 * fB2 - m03 * fB0;
-        float f31 = +m00 * fB3 - m01 * fB1 + m02 * fB0;
-        float f02 = +m31 * fA5 - m32 * fA4 + m33 * fA3;
-        float f12 = -m30 * fA5 + m32 * fA2 - m33 * fA1;
-        float f22 = +m30 * fA4 - m31 * fA2 + m33 * fA0;
-        float f32 = -m30 * fA3 + m31 * fA1 - m32 * fA0;
-        float f03 = -m21 * fA5 + m22 * fA4 - m23 * fA3;
-        float f13 = +m20 * fA5 - m22 * fA2 + m23 * fA1;
-        float f23 = -m20 * fA4 + m21 * fA2 - m23 * fA0;
-        float f33 = +m20 * fA3 - m21 * fA1 + m22 * fA0;
-
-        m00 = f00;
-        m01 = f01;
-        m02 = f02;
-        m03 = f03;
-        m10 = f10;
-        m11 = f11;
-        m12 = f12;
-        m13 = f13;
-        m20 = f20;
-        m21 = f21;
-        m22 = f22;
-        m23 = f23;
-        m30 = f30;
-        m31 = f31;
-        m32 = f32;
-        m33 = f33;
+        m00 = m1.m00; m01 = m1.m01; m02 = m1.m02; m03 = m1.m03;
+        m10 = m1.m10; m11 = m1.m11; m12 = m1.m12; m13 = m1.m13;
+        m20 = m1.m20; m21 = m1.m21; m22 = m1.m22; m23 = m1.m23;
+        m30 = m1.m30; m31 = m1.m31; m32 = m1.m32; m33 = m1.m33;
+        /* end edit */
 
         float fInvDet = 1.0f / fDet;
         multLocal(fInvDet);
@@ -1536,26 +1498,33 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
             store = new Matrix4f();
         }
 
-        calculateLeibniz(); /* added by Thijs */
-
-        store.m00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
-        store.m10 = -m10 * fB5 + m12 * fB2 - m13 * fB1;
-        store.m20 = +m10 * fB4 - m11 * fB2 + m13 * fB0;
-        store.m30 = -m10 * fB3 + m11 * fB1 - m12 * fB0;
-        store.m01 = -m01 * fB5 + m02 * fB4 - m03 * fB3;
-        store.m11 = +m00 * fB5 - m02 * fB2 + m03 * fB1;
-        store.m21 = -m00 * fB4 + m01 * fB2 - m03 * fB0;
-        store.m31 = +m00 * fB3 - m01 * fB1 + m02 * fB0;
-        store.m02 = +m31 * fA5 - m32 * fA4 + m33 * fA3;
-        store.m12 = -m30 * fA5 + m32 * fA2 - m33 * fA1;
-        store.m22 = +m30 * fA4 - m31 * fA2 + m33 * fA0;
-        store.m32 = -m30 * fA3 + m31 * fA1 - m32 * fA0;
-        store.m03 = -m21 * fA5 + m22 * fA4 - m23 * fA3;
-        store.m13 = +m20 * fA5 - m22 * fA2 + m23 * fA1;
-        store.m23 = -m20 * fA4 + m21 * fA2 - m23 * fA0;
-        store.m33 = +m20 * fA3 - m21 * fA1 + m22 * fA0;
+        /* added by Thijs */
+        calculateLeibniz();
+        store = setMatrixContents(store); 
 
         return store;
+    }
+    
+    public Matrix4f setMatrixContents(Matrix4f matrix)
+    {
+    	matrix.m00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
+        matrix.m10 = -m10 * fB5 + m12 * fB2 - m13 * fB1;
+        matrix.m20 = +m10 * fB4 - m11 * fB2 + m13 * fB0;
+        matrix.m30 = -m10 * fB3 + m11 * fB1 - m12 * fB0;
+        matrix.m01 = -m01 * fB5 + m02 * fB4 - m03 * fB3;
+        matrix.m11 = +m00 * fB5 - m02 * fB2 + m03 * fB1;
+        matrix.m21 = -m00 * fB4 + m01 * fB2 - m03 * fB0;
+        matrix.m31 = +m00 * fB3 - m01 * fB1 + m02 * fB0;
+        matrix.m02 = +m31 * fA5 - m32 * fA4 + m33 * fA3;
+        matrix.m12 = -m30 * fA5 + m32 * fA2 - m33 * fA1;
+        matrix.m22 = +m30 * fA4 - m31 * fA2 + m33 * fA0;
+        matrix.m32 = -m30 * fA3 + m31 * fA1 - m32 * fA0;
+        matrix.m03 = -m21 * fA5 + m22 * fA4 - m23 * fA3;
+        matrix.m13 = +m20 * fA5 - m22 * fA2 + m23 * fA1;
+        matrix.m23 = -m20 * fA4 + m21 * fA2 - m23 * fA0;
+        matrix.m33 = +m20 * fA3 - m21 * fA1 + m22 * fA0;
+        
+        return matrix;
     }
 
     /**
