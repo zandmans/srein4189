@@ -46,5 +46,17 @@ public class FastMathTest {
 		assertEquals(FastMath.nearestPowerOfTwo(513), 1024);
 		assertEquals(FastMath.nearestPowerOfTwo(1555), 2048);
 	}
+	
+	@Test
+	public void testCopySign(){
+		assertEquals(FastMath.copysign(1, -1), -1, 0.0000001);
+		assertEquals(FastMath.copysign(-1, -1), -1, 0.0000001);
+		assertEquals(FastMath.copysign(1, 1), 1, 0.0000001);
+		assertEquals(FastMath.copysign(-1, -1), -1, 0.0000001);
+		assertEquals(FastMath.copysign(0, -1), 0, 0.0000001);
+		assertEquals(FastMath.copysign(0, 1), 0, 0.0000001);
+		assertEquals(FastMath.copysign(1, 0), 1, 0.0000001);
+		assertEquals(FastMath.copysign(1, -0), 1, 0.0000001);
+	}
 
 }

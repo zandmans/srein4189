@@ -869,7 +869,7 @@ final public class FastMath {
     }
 
     /**
-     * Takes an value and expresses it in terms of min to max.
+     * Takes a value and expresses it in terms of min to max.
      * 
      * @param val -
      *            the angle to normalize (in radians)
@@ -897,13 +897,11 @@ final public class FastMath {
      * @return x with its sign changed to match the sign of y.
      */
     public static float copysign(float x, float y) {
-        if (y >= 0 && x <= -0) {
+    	/* chris: less complex */
+        if( (y >= 0 && x <= -0) || (y < 0 && x >= 0)) {
             return -x;
-        } else if (y < 0 && x >= 0) {
-            return -x;
-        } else {
-            return x;
         }
+        return x;
     }
 
     /**
