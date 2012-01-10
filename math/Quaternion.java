@@ -1146,19 +1146,13 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
             return true;
         }
 
+        /* chris: made into 1 if statement since Java evaluates lazy anyway */
         Quaternion comp = (Quaternion) o;
-        if (Float.compare(x, comp.x) != 0) {
-            return false;
-        }
-        if (Float.compare(y, comp.y) != 0) {
-            return false;
-        }
-        if (Float.compare(z, comp.z) != 0) {
-            return false;
-        }
-        if (Float.compare(w, comp.w) != 0) {
-            return false;
-        }
+        if( (Float.compare(x, comp.x) != 0) ||
+    		(Float.compare(y, comp.y) != 0) ||
+    		(Float.compare(z, comp.z) != 0) ||
+    		(Float.compare(w, comp.w) != 0) )
+        { return false; }
         return true;
     }
 

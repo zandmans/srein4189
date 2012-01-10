@@ -858,8 +858,8 @@ public final class Vector4f extends AbstractVector implements Savable, Cloneable
     }
 
     /**
-     * are these two vectors the same? they are is they both have the same x,y,
-     * and z values.
+     * are these two vectors the same? they are if they both have the same x,y,
+     * z and w values.
      *
      * @param o
      *            the object to compare for equality
@@ -867,14 +867,15 @@ public final class Vector4f extends AbstractVector implements Savable, Cloneable
      */
     public boolean equals(Object o) {
         if (!(o instanceof Vector4f)) { return false; }
-
         if (this == o) { return true; }
-
+        
+        /* chris: one if statement lazy evaluation */
         Vector4f comp = (Vector4f) o;
-        if (Float.compare(x,comp.x) != 0) return false;
-        if (Float.compare(y,comp.y) != 0) return false;
-        if (Float.compare(z,comp.z) != 0) return false;
-        if (Float.compare(w,comp.w) != 0) return false;
+        if( (Float.compare(x,comp.x) != 0) || 
+    		(Float.compare(y,comp.y) != 0) || 
+    		(Float.compare(z,comp.z) != 0) || 
+    		(Float.compare(w,comp.w) != 0) )
+        { return false; }
         return true;
     }
 

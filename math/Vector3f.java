@@ -937,13 +937,14 @@ public final class Vector3f extends AbstractVector implements Savable, Cloneable
      */
     public boolean equals(Object o) {
         if (!(o instanceof Vector3f)) { return false; }
-
         if (this == o) { return true; }
-
+        
+        /* chris: one if statement lazy evaluation */
         Vector3f comp = (Vector3f) o;
-        if (Float.compare(x,comp.x) != 0) return false;
-        if (Float.compare(y,comp.y) != 0) return false;
-        if (Float.compare(z,comp.z) != 0) return false;
+        if( (Float.compare(x,comp.x) != 0) || 
+        	(Float.compare(y,comp.y) != 0) || 
+        	(Float.compare(z,comp.z) != 0) )
+        { return false; }
         return true;
     }
 

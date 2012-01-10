@@ -695,19 +695,13 @@ public final class Vector2f extends AbstractVector implements Savable, Cloneable
      * @return true if they are equal
      */
     public boolean equals(Object o) {
-        if (!(o instanceof Vector2f)) {
-            return false;
-        }
-
-        if (this == o) {
-            return true;
-        }
-
+        if (!(o instanceof Vector2f)){ return false; }
+        if (this == o){ return true; }
+        /* chris: one if statement lazy evaluation */
         Vector2f comp = (Vector2f) o;
-        if (Float.compare(x, comp.x) != 0)
-            return false;
-        if (Float.compare(y, comp.y) != 0)
-            return false;
+        if( (Float.compare(x, comp.x) != 0) || (Float.compare(y, comp.y) != 0) ){ 
+        	return false; 
+        }
         return true;
     }
 
