@@ -93,7 +93,6 @@ public class QuaternionTest {
 		q2 = new Quaternion(0,0,0,0.00001f);
 		assertFalse(q1.equals(q2));
 		assertFalse(q1.equals(null));
-		
 	}
 
 }
