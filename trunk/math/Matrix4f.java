@@ -280,51 +280,13 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
      */
     @SuppressWarnings("fallthrough")
     public float get(int i, int j) {
-        switch (i) {
-            case 0:
-                switch (j) {
-                    case 0:
-                        return m00;
-                    case 1:
-                        return m01;
-                    case 2:
-                        return m02;
-                    case 3:
-                        return m03;
-                }
-            case 1:
-                switch (j) {
-                    case 0:
-                        return m10;
-                    case 1:
-                        return m11;
-                    case 2:
-                        return m12;
-                    case 3:
-                        return m13;
-                }
-            case 2:
-                switch (j) {
-                    case 0:
-                        return m20;
-                    case 1:
-                        return m21;
-                    case 2:
-                        return m22;
-                    case 3:
-                        return m23;
-                }
-            case 3:
-                switch (j) {
-                    case 0:
-                        return m30;
-                    case 1:
-                        return m31;
-                    case 2:
-                        return m32;
-                    case 3:
-                        return m33;
-                }
+
+    	if(i>=0 && i<=3 && j>=0 && j<=3){
+    		float[][] m = { {m00, m01, m02, m03},
+    						{m10, m11, m12, m13},
+    						{m20, m21, m22, m23},
+    						{m30, m31, m32, m33} };
+    		return m[i][j];
         }
 
         logger.warning("Invalid matrix index.");
