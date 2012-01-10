@@ -211,11 +211,8 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
      * @return true if this Quaternion is {0,0,0,1}
      */
     public boolean isIdentity() {
-        if (x == 0 && y == 0 && z == 0 && w == 1) {
-            return true;
-        } else {
-            return false;
-        }
+    	/* chris: simplified */
+        return (x == 0 && y == 0 && z == 0 && w == 1);
     }
 
     /**
