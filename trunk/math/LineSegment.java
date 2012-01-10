@@ -36,6 +36,7 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
+import com.jme3.scene.plugins.blender.animations.CalculationBone;
 import com.jme3.util.TempVars;
 import java.io.IOException;
 
@@ -155,7 +156,7 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
             s1 = negativeDirectionDot * diffThisDot - diffTestDot;
             extentDeterminant0 = extent * determinant;
             extentDeterminant1 = test.getExtent() * determinant;
-
+            
             if (s0 >= -extentDeterminant0) {
                 if (s0 <= extentDeterminant0) {
                     if (s1 >= -extentDeterminant1) {
@@ -427,8 +428,11 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
         float fB1 = -kDiff.dot(direction);
         float fC = kDiff.lengthSquared();
         float fDet = FastMath.abs(1.0f - fA01 * fA01);
-        float fS0, fS1, fSqrDist, fExtDet;
+        float fS0, fS1, fExtDet;
 
+        float fSqrDist = 0.0f; //initialize
+        
+        boolean msq = false; // ??add -fS0*fS0??
         if (fDet >= FastMath.FLT_EPSILON) {
             // The ray and segment are not parallel.
             fS0 = fA01 * fB1 - fB0;
@@ -445,30 +449,23 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
                         fS1 *= fInvDet;
                         fSqrDist = fS0
                                 * (fS0 + fA01 * fS1 + ((float) 2.0) * fB0)
-                                + fS1
-                                * (fA01 * fS0 + fS1 + ((float) 2.0) * fB1) + fC;
+                                + fS1 * (fA01 * fS0);
                     } else // region 1
                     {
                         fS1 = extent;
                         fS0 = -(fA01 * fS1 + fB0);
-                        if (fS0 > (float) 0.0) {
-                            fSqrDist = -fS0 * fS0 + fS1
-                                    * (fS1 + ((float) 2.0) * fB1) + fC;
-                        } else {
+                        msq = (fS0 > (float) 0.0); 
+                        if (!msq) {
                             fS0 = (float) 0.0;
-                            fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
                         }
                     }
                 } else // region 5
                 {
                     fS1 = -extent;
                     fS0 = -(fA01 * fS1 + fB0);
-                    if (fS0 > (float) 0.0) {
-                        fSqrDist = -fS0 * fS0 + fS1
-                                * (fS1 + ((float) 2.0) * fB1) + fC;
-                    } else {
+                    msq = (fS0 > (float) 0.0); 
+                    if (!msq) {
                         fS0 = (float) 0.0;
-                        fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
                     }
                 }
             } else {
@@ -477,8 +474,7 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
                     fS0 = -(-fA01 * extent + fB0);
                     if (fS0 > (float) 0.0) {
                         fS1 = -extent;
-                        fSqrDist = -fS0 * fS0 + fS1
-                                * (fS1 + ((float) 2.0) * fB1) + fC;
+                        msq = true;
                     } else {
                         fS0 = (float) 0.0;
                         fS1 = -fB1;
@@ -487,7 +483,6 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
                         } else if (fS1 > extent) {
                             fS1 = extent;
                         }
-                        fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
                     }
                 } else if (fS1 <= fExtDet) // region 3
                 {
@@ -498,14 +493,12 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
                     } else if (fS1 > extent) {
                         fS1 = extent;
                     }
-                    fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
                 } else // region 2
                 {
                     fS0 = -(fA01 * extent + fB0);
                     if (fS0 > (float) 0.0) {
                         fS1 = extent;
-                        fSqrDist = -fS0 * fS0 + fS1
-                                * (fS1 + ((float) 2.0) * fB1) + fC;
+                        msq = true;
                     } else {
                         fS0 = (float) 0.0;
                         fS1 = -fB1;
@@ -514,29 +507,44 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
                         } else if (fS1 > extent) {
                             fS1 = extent;
                         }
-                        fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
                     }
                 }
             }
         } else {
             // ray and segment are parallel
+        	fS1 = extent; // same direction vectors
             if (fA01 > (float) 0.0) {
                 // opposite direction vectors
                 fS1 = -extent;
-            } else {
-                // same direction vectors
-                fS1 = extent;
             }
 
             fS0 = -(fA01 * fS1 + fB0);
-            if (fS0 > (float) 0.0) {
-                fSqrDist = -fS0 * fS0 + fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
-            } else {
+            msq = (fS0 > (float) 0.0); 
+            if (!msq) {
                 fS0 = (float) 0.0;
-                fSqrDist = fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
             }
         }
+        fSqrDist += calc_sqrdist(fS0, fS1, fB1, fC, msq);
         return FastMath.abs(fSqrDist);
+    }
+    
+    /**
+     * Calculates that thing that distanceSquared calculates all the time.
+     * If msq is True, -fS0 * fS0 is added to the equation
+     * 
+     * @author chris
+     * @param fS0
+     * @param fS1
+     * @param fB1
+     * @param fC
+     * @param msq
+     * 				if true, add a -fS0*fs0 component 
+     * @return calculated value
+     */
+    public float calc_sqrdist(float fS0, float fS1, float fB1, float fC, boolean msq){
+    	float addition = 0.0f;
+    	if(msq){ addition = -fS0 * fS0; }
+    	return addition + fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
     }
 
     public Vector3f getDirection() {
