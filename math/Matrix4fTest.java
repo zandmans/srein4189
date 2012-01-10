@@ -109,5 +109,46 @@ public class Matrix4fTest
 		assertEquals(m2.m32, 0.0f, 0.000001);
 		assertEquals(m2.m33, 0.0f, 0.000001);
 	}
+	
+	@Test
+	public void testGetIntInt(){
+		float[] data = new float[16];
+		m1.get(data, true);
+		assertEquals(data[0], 1, 0.000001);
+		assertEquals(data[1], 2, 0.000001);
+		assertEquals(data[2], 3, 0.000001);
+		assertEquals(data[3], 4, 0.000001);
+		assertEquals(data[4], 5, 0.000001);
+		assertEquals(data[5], 6, 0.000001);
+		assertEquals(data[6], 7, 0.000001);
+		assertEquals(data[7], 8, 0.000001);
+		assertEquals(data[8], 9, 0.000001);
+		assertEquals(data[9], 10, 0.000001);
+		assertEquals(data[10], 11, 0.000001);
+		assertEquals(data[11], 12, 0.000001);
+		assertEquals(data[12], 13, 0.000001);
+		assertEquals(data[13], 14, 0.000001);
+		assertEquals(data[14], 15, 0.000001);
+		assertEquals(data[15], 16, 0.000001);
+
+		data = new float[16];
+		m1.get(data, false);
+		assertEquals(data[0], 1, 0.000001);
+		assertEquals(data[1], 5, 0.000001);
+		assertEquals(data[2], 9, 0.000001);
+		assertEquals(data[3], 13, 0.000001);
+		assertEquals(data[4], 2, 0.000001);
+		assertEquals(data[5], 6, 0.000001);
+		assertEquals(data[6], 10, 0.000001);
+		assertEquals(data[7], 14, 0.000001);
+		assertEquals(data[8], 3, 0.000001);
+		assertEquals(data[9], 7, 0.000001);
+		assertEquals(data[10], 11, 0.000001);
+		assertEquals(data[11], 15, 0.000001);
+		assertEquals(data[12], 4, 0.000001);
+		assertEquals(data[13], 8, 0.000001);
+		assertEquals(data[14], 12, 0.000001);
+		assertEquals(data[15], 16, 0.000001);
+	}
 
 }

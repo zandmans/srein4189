@@ -110,6 +110,57 @@ public class Matrix3fTest
 	}
 	
 	@Test
+	public void testGetFloatBool(){
+		float[] data = new float[9];
+		m3f.get(data, true);
+		assertEquals(data[0], 1, 0.000001);
+		assertEquals(data[1], 2, 0.000001);
+		assertEquals(data[2], 3, 0.000001);
+		assertEquals(data[3], 4, 0.000001);
+		assertEquals(data[4], 5, 0.000001);
+		assertEquals(data[5], 6, 0.000001);
+		assertEquals(data[6], 7, 0.000001);
+		assertEquals(data[7], 8, 0.000001);
+		assertEquals(data[8], 9, 0.000001);
+
+		float[] data2 = new float[9];
+		m3f.get(data2, false);
+		assertEquals(data2[0], 1, 0.000001);
+		assertEquals(data2[1], 4, 0.000001);
+		assertEquals(data2[2], 7, 0.000001);
+		assertEquals(data2[3], 2, 0.000001);
+		assertEquals(data2[4], 5, 0.000001);
+		assertEquals(data2[5], 8, 0.000001);
+		assertEquals(data2[6], 3, 0.000001);
+		assertEquals(data2[7], 6, 0.000001);
+		assertEquals(data2[8], 9, 0.000001);
+		
+		float[] data3 = new float[16];
+		m3f.get(data3, true);
+		assertEquals(data3[0], 1, 0.000001);
+		assertEquals(data3[1], 2, 0.000001);
+		assertEquals(data3[2], 3, 0.000001);
+		assertEquals(data3[4], 4, 0.000001);
+		assertEquals(data3[5], 5, 0.000001);
+		assertEquals(data3[6], 6, 0.000001);
+		assertEquals(data3[8], 7, 0.000001);
+		assertEquals(data3[9], 8, 0.000001);
+		assertEquals(data3[10], 9, 0.000001);
+		
+		float[] data4 = new float[16];
+		m3f.get(data4, false);
+		assertEquals(data4[0], 1, 0.000001);
+		assertEquals(data4[1], 4, 0.000001);
+		assertEquals(data4[2], 7, 0.000001);
+		assertEquals(data4[4], 2, 0.000001);
+		assertEquals(data4[5], 5, 0.000001);
+		assertEquals(data4[6], 8, 0.000001);
+		assertEquals(data4[8], 3, 0.000001);
+		assertEquals(data4[9], 6, 0.000001);
+		assertEquals(data4[10], 9, 0.000001);
+	}
+	
+	@Test
 	public void testIsIdentity(){
 		Matrix3f id = new Matrix3f(); // should default to identity matrix
 		Matrix3f nonid = new Matrix3f(0,1,0,1,0,0,0,0,1);

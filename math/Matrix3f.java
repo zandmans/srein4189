@@ -171,36 +171,12 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      */
     @SuppressWarnings("fallthrough")
     public float get(int i, int j) {
-        switch (i) {
-            case 0:
-                switch (j) {
-                    case 0:
-                        return m00;
-                    case 1:
-                        return m01;
-                    case 2:
-                        return m02;
-                }
-            case 1:
-                switch (j) {
-                    case 0:
-                        return m10;
-                    case 1:
-                        return m11;
-                    case 2:
-                        return m12;
-                }
-            case 2:
-                switch (j) {
-                    case 0:
-                        return m20;
-                    case 1:
-                        return m21;
-                    case 2:
-                        return m22;
-                }
-        }
-
+    	if(i<=2 && i>=0 && j>=0 && j<=2){
+    		float[][] m = { {m00, m01, m02},
+    						{m10, m11, m12},
+    						{m20, m21, m22} };
+    		return m[i][j]; 
+		}
         logger.warning("Invalid matrix index.");
         throw new IllegalArgumentException("Invalid indices into matrix.");
     }
@@ -216,53 +192,48 @@ public final class Matrix3f extends AbstractMatrix implements Savable, Cloneable
      *      false for column major (translation in elements 12, 13, 14 for a 4x4).
      */
     public void get(float[] data, boolean rowMajor) {
-        if (data.length == 9) {
-            if (rowMajor) {
-                data[0] = m00;
-                data[1] = m01;
-                data[2] = m02;
+    	if(data.length != 9 && data.length != 16){
+    		throw new IndexOutOfBoundsException("Array size must be 9 or 16 in Matrix3f.get().");
+    	}
+    	if(rowMajor){
+    		data[0] = m00;
+    		data[1] = m01;
+    		data[2] = m02;
+    		if (data.length == 9){
                 data[3] = m10;
                 data[4] = m11;
                 data[5] = m12;
                 data[6] = m20;
                 data[7] = m21;
                 data[8] = m22;
-            } else {
-                data[0] = m00;
-                data[1] = m10;
-                data[2] = m20;
-                data[3] = m01;
-                data[4] = m11;
-                data[5] = m21;
-                data[6] = m02;
-                data[7] = m12;
-                data[8] = m22;
-            }
-        } else if (data.length == 16) {
-            if (rowMajor) {
-                data[0] = m00;
-                data[1] = m01;
-                data[2] = m02;
+    		}else if (data.length == 16){
                 data[4] = m10;
                 data[5] = m11;
                 data[6] = m12;
                 data[8] = m20;
                 data[9] = m21;
                 data[10] = m22;
-            } else {
-                data[0] = m00;
-                data[1] = m10;
-                data[2] = m20;
+    		}
+    	}else{
+            data[0] = m00;
+            data[1] = m10;
+            data[2] = m20;
+    		if (data.length == 9){
+                data[3] = m01;
+                data[4] = m11;
+                data[5] = m21;
+                data[6] = m02;
+                data[7] = m12;
+                data[8] = m22;
+    		}else if (data.length == 16){
                 data[4] = m01;
                 data[5] = m11;
                 data[6] = m21;
                 data[8] = m02;
                 data[9] = m12;
                 data[10] = m22;
-            }
-        } else {
-            throw new IndexOutOfBoundsException("Array size must be 9 or 16 in Matrix3f.get().");
-        }
+    		}
+    	}
     }
 
     /**
