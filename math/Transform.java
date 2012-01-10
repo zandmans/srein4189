@@ -270,9 +270,9 @@ public final class Transform implements Savable, Cloneable, java.io.Serializable
 
     @Override
     public String toString(){
-        return getClass().getSimpleName() + "[ " + translation.x + ", " + translation.y + ", " + translation.z + "]\n"
-                                          + "[ " + rot.x + ", " + rot.y + ", " + rot.z + ", " + rot.w + "]\n"
-                                          + "[ " + scale.x + " , " + scale.y + ", " + scale.z + "]";
+        return getClass().getSimpleName() + translation.toString().replace("(", "[").replace(")", "]") + "\n"
+                                          + rot.toString().replace("(", "[").replace(")", "]") + "\n"
+                                          + scale.toString().replace("(", "[").replace(")", "]");
     }
 
     /**

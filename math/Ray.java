@@ -63,10 +63,6 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
     public Vector3f direction;
     public float limit = Float.POSITIVE_INFINITY;
 
-//    protected static final Vector3f tempVa=new Vector3f();
-//    protected static final Vector3f tempVb=new Vector3f();
-//    protected static final Vector3f tempVc=new Vector3f();
-//    protected static final Vector3f tempVd=new Vector3f();
     /**
      * Constructor instantiates a new <code>Ray</code> object. As default, the
      * origin is (0,0,0) and the direction is (0,0,0).
@@ -88,29 +84,6 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
         this.direction = direction;
     }
 
-    /**
-     * <code>intersect</code> determines if the Ray intersects a triangle.
-     * @param t the Triangle to test against.
-     * @return true if the ray collides.
-     */
-//    public boolean intersect(Triangle t) {
-//        return intersect(t.get(0), t.get(1), t.get(2));
-//    }
-    /**
-     * <code>intersect</code> determines if the Ray intersects a triangle
-     * defined by the specified points.
-     *
-     * @param v0
-     *            first point of the triangle.
-     * @param v1
-     *            second point of the triangle.
-     * @param v2
-     *            third point of the triangle.
-     * @return true if the ray collides.
-     */
-//    public boolean intersect(Vector3f v0,Vector3f v1,Vector3f v2){
-//        return intersectWhere(v0, v1, v2, null);
-//    }
     /**
      * <code>intersectWhere</code> determines if the Ray intersects a triangle. It then
      * stores the point of intersection in the given loc vector

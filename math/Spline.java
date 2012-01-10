@@ -272,13 +272,45 @@ public class Spline implements Savable {
             	FastMath.interpolateBezier(value, controlPoints.get(currentControlPoint), controlPoints.get(currentControlPoint + 1), controlPoints.get(currentControlPoint + 2), controlPoints.get(currentControlPoint + 3), store);
             	break;
             case Nurb:
-            	CurveAndSurfaceMath.interpolateNurbs(value, this, store);
+            	interpolateNurbs(value, store);
             	break;
             default:
                 break;
         }
         return store;
     }
+    
+    /**
+	 * This method interpolates tha data for the nurbs curve.
+	 * @param u
+	 *            the u value
+	 * @param nurbSpline
+	 *            the nurbs spline definition
+	 * @param store
+	 *            the resulting point in 3D space
+	 *            
+	 *	Edited by Thijs:
+	 *	Moved this function from CurveAndSurfaceMath to Spline because of Feature Envy
+	 */
+    public void interpolateNurbs(float u, Vector3f store) {
+		if (getType() != SplineType.Nurb)
+			throw new IllegalArgumentException("Given spline is not of a NURB type!");
+		
+		List<Vector3f> controlPoints = getControlPoints();
+		float[] weights = getWeights();
+		List<Float> knots = getKnots();
+		int controlPointAmount = controlPoints.size();
+
+		store.set(Vector3f.ZERO);
+		float delimeter = 0;
+		for (int i = 0; i < controlPointAmount; ++i)
+		{
+			float val = weights[i] * CurveAndSurfaceMath.computeBaseFunctionValue(i, getBasisFunctionDegree(), u, knots);
+			store.addLocal(getControlPoints().get(i).mult(val));
+			delimeter += val;
+		}
+		store.divideLocal(delimeter);
+	}
 
     /**
      * returns the curve tension

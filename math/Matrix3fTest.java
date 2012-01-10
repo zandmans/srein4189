@@ -114,4 +114,14 @@ public class Matrix3fTest
 		Matrix3f id = new Matrix3f(); // should default to identity matrix
 		assertTrue(id.isIdentity());
 	}
+	
+	
+	@Test
+	public void testComputeRoots()
+	{
+		double[] roots = new double[3];
+		m3f.computeRoots(roots);
+		
+		//assertEquals(roots,new double[3]);
+	}
 }

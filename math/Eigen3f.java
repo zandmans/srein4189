@@ -68,7 +68,7 @@ public class Eigen3f implements java.io.Serializable {
 
         // Compute the eigenvalues using double-precision arithmetic.
         double roots[] = new double[3];
-        computeRoots(scaledData, roots);
+        scaledData.computeRoots(roots);
         eigenValues[0] = (float) roots[0];
         eigenValues[1] = (float) roots[1];
         eigenValues[2] = (float) roots[2];
@@ -263,81 +263,6 @@ public class Eigen3f implements java.io.Serializable {
         maxRowStore.set(matrix.getRow(iMaxRow));
 
         return maxMagnitudeStore[0] >= FastMath.ZERO_TOLERANCE;
-    }
-
-    /**
-     * Generate the base eigen values of the given matrix using double precision
-     * math.
-     * 
-     * @param mat
-     *            the Matrix3f to analyze.
-     * @param rootsStore
-     *            a double array to store the results in. Must be at least
-     *            length 3.
-     */
-    private void computeRoots(Matrix3f mat, double[] rootsStore) {
-        // Convert the unique matrix entries to double precision.
-        double a = mat.m00, b = mat.m01, c = mat.m02,
-                            d = mat.m11, e = mat.m12,
-                                         f = mat.m22;
-
-        // The characteristic equation is x^3 - c2*x^2 + c1*x - c0 = 0. The
-        // eigenvalues are the roots to this equation, all guaranteed to be
-        // real-valued, because the matrix is symmetric.
-        double char0 = a * d * f + 2.0 * b * c * e - a
-                * e * e - d * c * c - f * b * b;
-
-        double char1 = a * d - b * b + a * f - c * c
-                + d * f - e * e;
-
-        double char2 = a + d + f;
-
-        // Construct the parameters used in classifying the roots of the
-        // equation and in solving the equation for the roots in closed form.
-        double char2Div3 = char2 * ONE_THIRD_DOUBLE;
-        double abcDiv3 = (char1 - char2 * char2Div3) * ONE_THIRD_DOUBLE;
-        if (abcDiv3 > 0.0) {
-            abcDiv3 = 0.0;
-        }
-
-        double mbDiv2 = 0.5 * (char0 + char2Div3 * (2.0 * char2Div3 * char2Div3 - char1));
-
-        double q = mbDiv2 * mbDiv2 + abcDiv3 * abcDiv3 * abcDiv3;
-        if (q > 0.0) {
-            q = 0.0;
-        }
-
-        // Compute the eigenvalues by solving for the roots of the polynomial.
-        double magnitude = Math.sqrt(-abcDiv3);
-        double angle = Math.atan2(Math.sqrt(-q), mbDiv2) * ONE_THIRD_DOUBLE;
-        double cos = Math.cos(angle);
-        double sin = Math.sin(angle);
-        double root0 = char2Div3 + 2.0 * magnitude * cos;
-        double root1 = char2Div3 - magnitude
-                * (cos + ROOT_THREE_DOUBLE * sin);
-        double root2 = char2Div3 - magnitude
-                * (cos - ROOT_THREE_DOUBLE * sin);
-
-        // Sort in increasing order.
-        if (root1 >= root0) {
-            rootsStore[0] = root0;
-            rootsStore[1] = root1;
-        } else {
-            rootsStore[0] = root1;
-            rootsStore[1] = root0;
-        }
-
-        if (root2 >= rootsStore[1]) {
-            rootsStore[2] = root2;
-        } else {
-            rootsStore[2] = rootsStore[1];
-            if (root2 >= rootsStore[0]) {
-                rootsStore[1] = root2;
-            } else {
-                rootsStore[1] = rootsStore[0];
-                rootsStore[0] = root2;
-            }
-        }
     }
 
     public static void main(String[] args) {
