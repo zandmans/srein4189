@@ -81,5 +81,33 @@ public class Matrix4fTest
 		assertEquals(m2.m32, 15, 0.000001);
 		assertEquals(m2.m33, 16, 0.000001);
 	}
+	
+	@Test
+	public void testSetMatrixContents()
+	{
+		m1.calculateLeibniz();
+		m2 = m1.setMatrixContents(m2);
+		
+		
+		assertEquals(m2.m00, 0.0f, 0.000001);
+		assertEquals(m2.m01, 0.0f, 0.000001);
+		assertEquals(m2.m02, 0.0f, 0.000001);
+		assertEquals(m2.m03, 0.0f, 0.000001);
+		
+		assertEquals(m2.m10, 0.0f, 0.000001);
+		assertEquals(m2.m11, 0.0f, 0.000001);
+		assertEquals(m2.m12, 0.0f, 0.000001);
+		assertEquals(m2.m13, 0.0f, 0.000001);
+		
+		assertEquals(m2.m20, 0.0f, 0.000001);
+		assertEquals(m2.m21, 0.0f, 0.000001);
+		assertEquals(m2.m22, 0.0f, 0.000001);
+		assertEquals(m2.m23, 0.0f, 0.000001);
+		
+		assertEquals(m2.m30, 0.0f, 0.000001);
+		assertEquals(m2.m31, 0.0f, 0.000001);
+		assertEquals(m2.m32, 0.0f, 0.000001);
+		assertEquals(m2.m33, 0.0f, 0.000001);
+	}
 
 }
