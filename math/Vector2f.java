@@ -770,40 +770,4 @@ public final class Vector2f extends AbstractVector implements Savable, Cloneable
         x = newX;
         y = newY;
     }
-
-    /**
-     * @param index
-     * @return x value if index == 0 or y value if index == 1
-     * @throws IllegalArgumentException
-     *             if index is not one of 0, 2.
-     */
-    public float get(int index) {
-        switch (index) {
-            case 0:
-                return x;
-            case 1:
-                return y;
-        }
-        throw new IllegalArgumentException("index must be either 0 or 2");
-    }
-	
-    /**
-     * @param index
-     *            which field index in this vector to set.
-     * @param value
-     *            to set to one of x or y.
-     * @throws IllegalArgumentException
-     *             if index is not one of 0, 1.
-     */
-    public void set(int index, float value) {
-        switch (index) {
-            case 0:
-                x = value;
-                return;
-            case 1:
-                y = value;
-                return;
-        }
-        throw new IllegalArgumentException("index must be either 0 or 1");
-    }
 }

@@ -27,8 +27,5 @@ public abstract class AbstractVector {
 	public abstract int hashCode();
 	
 	public abstract String toString();
-	
-	public abstract float get(int index);
-	public abstract void set(int index, float value);
 
 }
