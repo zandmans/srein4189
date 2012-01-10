@@ -12,6 +12,7 @@ public class Matrix4fTest
 	
 	@Before
 	public void setUp(){
+		/* dont touch these two matrices: this will break the tests */
 		m1 = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 		m2 = new Matrix4f();
 	}
@@ -149,6 +150,49 @@ public class Matrix4fTest
 		assertEquals(data[13], 8, 0.000001);
 		assertEquals(data[14], 12, 0.000001);
 		assertEquals(data[15], 16, 0.000001);
+	}
+	
+	@Test
+	public void testEquals(){
+		assertTrue( m1.equals(m1) );
+		assertTrue( m2.equals(m2) );
+		assertFalse( m1.equals(m2) );
+		assertFalse( m1.equals("Lalalala") );
+
+		Matrix4f tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+		assertTrue( m1.equals(tm) );
+		tm = new Matrix4f(2,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,5,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3.99f,4,5,6,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,40,5,6,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,50,6,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,60,7,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,70,8,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,80,9,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,90,10,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,100,11,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,110,12,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,120,13,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13.1F,14,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14.9F,15,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15.0001F,16);
+		assertFalse( m1.equals(tm) );
+		tm = new Matrix4f(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,15.999F);
+		assertFalse( m1.equals(tm) );
 	}
 
 }
