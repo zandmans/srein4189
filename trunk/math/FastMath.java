@@ -117,46 +117,6 @@ final public class FastMath {
     }
 
     /**
-     * Linear interpolation from startValue to endValue by the given percent.
-     * Basically: ((1 - percent) * startValue) + (percent * endValue)
-     *
-     * @param scale
-     *            scale value to use. if 1, use endValue, if 0, use startValue.
-     * @param startValue
-     *            Begining value. 0% of f
-     * @param endValue
-     *            ending value. 100% of f
-     * @param store a vector3f to store the result
-     * @return The interpolated value between startValue and endValue.
-     */
-    public static Vector3f interpolateLinear(float scale, Vector3f startValue, Vector3f endValue, Vector3f store) {
-        if (store == null) {
-            store = new Vector3f();
-        }
-        /* edited by chris: this broke encapsulation */
-        store.set( interpolateLinear(scale, startValue.getX(), endValue.getX()), 
-        		   interpolateLinear(scale, startValue.getY(), endValue.getY()),
-        		   interpolateLinear(scale, startValue.getZ(), endValue.getZ()) );
-        return store;
-    }
-
-    /**
-     * Linear interpolation from startValue to endValue by the given percent.
-     * Basically: ((1 - percent) * startValue) + (percent * endValue)
-     *
-     * @param scale
-     *            scale value to use. if 1, use endValue, if 0, use startValue.
-     * @param startValue
-     *            Begining value. 0% of f
-     * @param endValue
-     *            ending value. 100% of f
-     * @return The interpolated value between startValue and endValue.
-     */
-    public static Vector3f interpolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
-        return interpolateLinear(scale, startValue, endValue, null);
-    }
-
-    /**
      * Linear extrapolation from startValue to endValue by the given scale.
      * if scale is between 0 and 1 this method returns the same result as interpolateLinear
      * if the scale is over 1 the value is linearly extrapolated.
@@ -167,46 +127,7 @@ final public class FastMath {
      * @return an extrapolation for the given parameters
      */
     public static float extrapolateLinear(float scale, float startValue, float endValue) {
-//        if (scale <= 0f) {
-//            return startValue;
-//        }
         return ((1f - scale) * startValue) + (scale * endValue);
-    }
-
-    /**
-     * Linear extrapolation from startValue to endValue by the given scale.
-     * if scale is between 0 and 1 this method returns the same result as interpolateLinear
-     * if the scale is over 1 the value is linearly extrapolated.
-     * Note that the end value is the value for a scale of 1. 
-     * @param scale the scale for extrapolation
-     * @param startValue the starting value (scale = 0)
-     * @param endValue the end value (scale = 1)
-     * @param store an initialized vector to store the return value
-     * @return an extrapolation for the given parameters
-     */
-    public static Vector3f extrapolateLinear(float scale, Vector3f startValue, Vector3f endValue, Vector3f store) {
-        if (store == null) {
-            store = new Vector3f();
-        }
-        /* edited by chris: this broke encapsulation */
-        store.setX( extrapolateLinear(scale, startValue.getX(), endValue.getX()) );
-        store.setY( extrapolateLinear(scale, startValue.getY(), endValue.getY()) );
-        store.setZ( extrapolateLinear(scale, startValue.getZ(), endValue.getZ()) );
-        return store;
-    }
-
-    /**
-     * Linear extrapolation from startValue to endValue by the given scale.
-     * if scale is between 0 and 1 this method returns the same result as interpolateLinear
-     * if the scale is over 1 the value is linearly extrapolated.
-     * Note that the end value is the value for a scale of 1.
-     * @param scale the scale for extrapolation
-     * @param startValue the starting value (scale = 0)
-     * @param endValue the end value (scale = 1)
-     * @return an extrapolation for the given parameters
-     */
-    public static Vector3f extrapolateLinear(float scale, Vector3f startValue, Vector3f endValue) {
-        return extrapolateLinear(scale, startValue, endValue, null);
     }
 
     /**Interpolate a spline between at least 4 control points following the Catmull-Rom equation.
@@ -235,53 +156,6 @@ final public class FastMath {
         return (float) (((c4 * u + c3) * u + c2) * u + c1);
     }
 
-    /**Interpolate a spline between at least 4 control points following the Catmull-Rom equation.
-     * here is the interpolation matrix
-     * m = [ 0.0  1.0  0.0   0.0 ]
-     *     [-T    0.0  T     0.0 ]
-     *     [ 2T   T-3  3-2T  -T  ]
-     *     [-T    2-T  T-2   T   ]
-     * where T is the tension of the curve
-     * the result is a value between p1 and p2, t=0 for p1, t=1 for p2
-     * @param u value from 0 to 1
-     * @param T The tension of the curve
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @param store a Vector3f to store the result
-     * @return catmull-Rom interpolation
-     */
-    public static Vector3f interpolateCatmullRom(float u, float T, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3, Vector3f store) {
-        if (store == null) {
-            store = new Vector3f();
-        }
-        store.setX( interpolateCatmullRom(u, T, p0.getX(), p1.getX(), p2.getX(), p3.getX()) );
-        store.setY( interpolateCatmullRom(u, T, p0.getY(), p1.getY(), p2.getY(), p3.getY()) );
-        store.setZ( interpolateCatmullRom(u, T, p0.getZ(), p1.getZ(), p2.getZ(), p3.getZ()) );
-        return store;
-    }
-
-    /**Interpolate a spline between at least 4 control points following the Catmull-Rom equation.
-     * here is the interpolation matrix
-     * m = [ 0.0  1.0  0.0   0.0 ]
-     *     [-T    0.0  T     0.0 ]
-     *     [ 2T   T-3  3-2T  -T  ]
-     *     [-T    2-T  T-2   T   ]
-     * where T is the tension of the curve
-     * the result is a value between p1 and p2, t=0 for p1, t=1 for p2
-     * @param u value from 0 to 1
-     * @param T The tension of the curve
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @return catmull-Rom interpolation
-     */
-    public static Vector3f interpolateCatmullRom(float u, float T, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
-        return interpolateCatmullRom(u, T, p0, p1, p2, p3, null);
-    }
-
     /**Interpolate a spline between at least 4 control points following the Bezier equation.
      * here is the interpolation matrix
      * m = [ -1.0   3.0  -3.0    1.0 ]
@@ -305,107 +179,6 @@ final public class FastMath {
                 + 3.0f * p1 * u * oneMinusU2
                 + 3.0f * p2 * u2 * oneMinusU
                 + p3 * u2 * u;
-    }
-
-    /**Interpolate a spline between at least 4 control points following the Bezier equation.
-     * here is the interpolation matrix
-     * m = [ -1.0   3.0  -3.0    1.0 ]
-     *     [  3.0  -6.0   3.0    0.0 ]
-     *     [ -3.0   3.0   0.0    0.0 ]
-     *     [  1.0   0.0   0.0    0.0 ]
-     * where T is the tension of the curve
-     * the result is a value between p1 and p3, t=0 for p1, t=1 for p3
-     * @param u value from 0 to 1
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @param store a Vector3f to store the result
-     * @return Bezier interpolation
-     */
-    public static Vector3f interpolateBezier(float u, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3, Vector3f store) {
-        if (store == null) {
-            store = new Vector3f();
-        }
-        store.set( interpolateBezier(u, p0.getX(), p1.getX(), p2.getX(), p3.getX()),
-        			interpolateBezier(u, p0.getY(), p1.getY(), p2.getY(), p3.getY()),
-        			interpolateBezier(u, p0.getZ(), p1.getZ(), p2.getZ(), p3.getZ()) );
-        return store;
-    }
-
-    /**Interpolate a spline between at least 4 control points following the Bezier equation.
-     * here is the interpolation matrix
-     * m = [ -1.0   3.0  -3.0    1.0 ]
-     *     [  3.0  -6.0   3.0    0.0 ]
-     *     [ -3.0   3.0   0.0    0.0 ]
-     *     [  1.0   0.0   0.0    0.0 ]
-     * where T is the tension of the curve
-     * the result is a value between p1 and p3, t=0 for p1, t=1 for p3
-     * @param u value from 0 to 1
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @return Bezier interpolation
-     */
-    public static Vector3f interpolateBezier(float u, Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
-        return interpolateBezier(u, p0, p1, p2, p3, null);
-    }
-
-    /**
-     * Compute the lenght on a catmull rom spline between control point 1 and 2
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @param startRange the starting range on the segment (use 0)
-     * @param endRange the end range on the segment (use 1)
-     * @param curveTension the curve tension
-     * @return the length of the segment
-     */
-    public static float getCatmullRomP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3, float startRange, float endRange, float curveTension) {
-
-        float epsilon = 0.001f;
-        float middleValue = (startRange + endRange) * 0.5f;
-        Vector3f start = p1.clone();
-        if (startRange != 0) {
-            FastMath.interpolateCatmullRom(startRange, curveTension, p0, p1, p2, p3, start);
-        }
-        Vector3f end = p2.clone();
-        if (endRange != 1) {
-            FastMath.interpolateCatmullRom(endRange, curveTension, p0, p1, p2, p3, end);
-        }
-        Vector3f middle = FastMath.interpolateCatmullRom(middleValue, curveTension, p0, p1, p2, p3);
-        float l = end.subtract(start).length();
-        float l1 = middle.subtract(start).length();
-        float l2 = end.subtract(middle).length();
-        float len = l1 + l2;
-        if (l + epsilon < len) {
-            l1 = getCatmullRomP1toP2Length(p0, p1, p2, p3, startRange, middleValue, curveTension);
-            l2 = getCatmullRomP1toP2Length(p0, p1, p2, p3, middleValue, endRange, curveTension);
-        }
-        l = l1 + l2;
-        return l;
-    }
-
-    /**
-     * Compute the lenght on a bezier spline between control point 1 and 2
-     * @param p0 control point 0
-     * @param p1 control point 1
-     * @param p2 control point 2
-     * @param p3 control point 3
-     * @return the length of the segment
-     */
-    public static float getBezierP1toP2Length(Vector3f p0, Vector3f p1, Vector3f p2, Vector3f p3) {
-        float delta = 0.02f, t = 0.0f, result = 0.0f;
-        Vector3f v1 = p0.clone(), v2 = new Vector3f();
-        while (t <= 1.0f) {
-            FastMath.interpolateBezier(t, p0, p1, p2, p3, v2);
-            result += v1.subtractLocal(v2).length();
-            v1.set(v2);
-            t += delta;
-        }
-        return result;
     }
 
     /**
@@ -798,77 +571,6 @@ final public class FastMath {
     }
 
     /**
-     * Converts a point from Spherical coordinates to Cartesian (using positive
-     * Y as up) and stores the results in the store var.
-     */
-    public static Vector3f sphericalToCartesian(Vector3f sphereCoords,
-            Vector3f store) {
-    	/* edited by chris: fixed encapsulation */
-        float a = sphereCoords.getX() * FastMath.cos(sphereCoords.getZ());
-        store.set( a * FastMath.cos(sphereCoords.getY()),
-        		   sphereCoords.getX() * FastMath.sin(sphereCoords.getZ()),
-        		   a * FastMath.sin(sphereCoords.getY()) );
-        return store;
-    }
-
-    /**
-     * Converts a point from Cartesian coordinates (using positive Y as up) to
-     * Spherical and stores the results in the store var. (Radius, Azimuth,
-     * Polar)
-     */
-    public static Vector3f cartesianToSpherical(Vector3f cartCoords,
-            Vector3f store) {
-        float x = cartCoords.getX();
-        if (x == 0) {
-            x = FastMath.FLT_EPSILON;
-        }
-        float storey = FastMath.atan(cartCoords.getZ() / x);
-        if (x < 0) {
-            storey += FastMath.PI;
-        }
-        float storex = FastMath.sqrt((x * x) 
-	        		+ (cartCoords.getY() * cartCoords.getY()) 
-	        		+ (cartCoords.getZ() * cartCoords.getZ()));
-        store.set( storex, storey, FastMath.asin(cartCoords.getY() / storex) );
-        return store;
-    }
-
-    /**
-     * Converts a point from Spherical coordinates to Cartesian (using positive
-     * Z as up) and stores the results in the store var.
-     */
-    public static Vector3f sphericalToCartesianZ(Vector3f sphereCoords,
-            Vector3f store) {
-        float a = sphereCoords.getX() * FastMath.cos(sphereCoords.getZ());
-        store.set( a * FastMath.cos(sphereCoords.getY()),
-        		   a * FastMath.sin(sphereCoords.getY()),
-        		   sphereCoords.getX() * FastMath.sin(sphereCoords.getZ()) );
-        return store;
-    }
-
-    /**
-     * Converts a point from Cartesian coordinates (using positive Z as up) to
-     * Spherical and stores the results in the store var. (Radius, Azimuth,
-     * Polar)
-     */
-    public static Vector3f cartesianZToSpherical(Vector3f cartCoords,
-            Vector3f store) {
-        float x = cartCoords.getX();
-        if (x == 0) {
-            x = FastMath.FLT_EPSILON;
-        }
-        float storex = FastMath.sqrt((x * x)
-	                + (cartCoords.getY() * cartCoords.getY())
-	                + (cartCoords.getZ() * cartCoords.getZ()));
-        float storez = FastMath.atan(cartCoords.getZ() / x);
-        if (x < 0) {
-            storez += FastMath.PI;
-        }
-        store.set( storex, FastMath.asin(cartCoords.getY() / store.getX()), storez );
-        return store;
-    }
-
-    /**
      * Takes a value and expresses it in terms of min to max.
      * 
      * @param val -
@@ -981,4 +683,7 @@ final public class FastMath {
                 | ((((f & 0x7f800000) - 0x38000000) >> 13) & 0x7c00)
                 | ((f >> 13) & 0x03ff));
     }
+    
+    
+    
 }
