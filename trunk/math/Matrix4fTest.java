@@ -196,30 +196,6 @@ public class Matrix4fTest
 	}
 	
 	@Test
-	public void testGet()
-	{
-		float[] matrix = new float[16];
-		m1.get(matrix,true);
-		
-		assertEquals(matrix[0], 1, 0.00001);
-		assertEquals(matrix[1], 2, 0.00001);
-		assertEquals(matrix[2], 3, 0.00001);
-		assertEquals(matrix[3], 4, 0.00001);
-		assertEquals(matrix[4], 5, 0.00001);
-		assertEquals(matrix[5], 6, 0.00001);
-		assertEquals(matrix[6], 7, 0.00001);
-		assertEquals(matrix[7], 8, 0.00001);
-		assertEquals(matrix[8], 9, 0.00001);
-		assertEquals(matrix[9], 10, 0.00001);
-		assertEquals(matrix[10], 11, 0.00001);
-		assertEquals(matrix[11], 12, 0.00001);
-		assertEquals(matrix[12], 13, 0.00001);
-		assertEquals(matrix[13], 14, 0.00001);
-		assertEquals(matrix[14], 15, 0.00001);
-		assertEquals(matrix[15], 16, 0.00001);
-	}
-	
-	@Test
 	public void testTransposeLocal()
 	{
 		Matrix4f matrix = m1.clone();

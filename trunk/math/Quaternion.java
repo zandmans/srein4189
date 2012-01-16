@@ -381,7 +381,7 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
      */
     public Matrix3f toRotationMatrix() {
         Matrix3f matrix = new Matrix3f();
-        return (Matrix3f)toRotationMatrix(matrix);
+        return (Matrix3f)toRotationMatrix(matrix); /* edited by Thijs: added a casting */
     }
 
     /**
@@ -392,6 +392,9 @@ public final class Quaternion implements Savable, Cloneable, java.io.Serializabl
      * @param result
      *            The Matrix4f to store the result in.
      * @return the rotation matrix representation of this quaternion.
+     * 
+     * edited by Thijs:
+     * Changed the Matrix4f/Matrix3f to AbstractMatrix so one function can be removed
      */
     public AbstractMatrix toRotationMatrix(AbstractMatrix result) {
     	
