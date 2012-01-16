@@ -54,15 +54,10 @@ import java.nio.FloatBuffer;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public final class Ray implements Savable, Cloneable, Collidable, java.io.Serializable {
+public final class Ray extends AbstractShape implements Savable, Cloneable, Collidable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
 
-    //todo: merge with Line?
-    /** The ray's begining point. */
-    public Vector3f origin;
-    /** The direction of the ray. */
-    public Vector3f direction;
     public float limit = Float.POSITIVE_INFINITY;
 
     /**
@@ -71,8 +66,7 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
      *
      */
     public Ray() {
-        origin = new Vector3f();
-        direction = new Vector3f();
+        super();
     }
 
     /**
@@ -400,17 +394,6 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
         vars.release();
         return len;
     }
-    
-    /**
-     * Edited by: Thijs
-     * Moved from Line.java
-     * 
-     * @param point
-     * @return
-     */
-    public float distance(Vector3f point) {
-        return FastMath.sqrt(distanceSquared(point));
-    }
 
     /**
      * Edited by: Thijs
@@ -508,25 +491,6 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
     }
 
     /**
-     *
-     * <code>getOrigin</code> retrieves the origin point of the ray.
-     *
-     * @return the origin of the ray.
-     */
-    public Vector3f getOrigin() {
-        return origin;
-    }
-
-    /**
-     *
-     * <code>setOrigin</code> sets the origin of the ray.
-     * @param origin the origin of the ray.
-     */
-    public void setOrigin(Vector3f origin) {
-        this.origin.set(origin);
-    }
-
-    /**
      * <code>getLimit</code> returns the limit or the ray, aka the length.
      * If the limit is not infinity, then this ray is a line with length <code>
      * limit</code>.
@@ -544,24 +508,6 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
      */
     public void setLimit(float limit) {
         this.limit = limit;
-    }
-
-    /**
-     *
-     * <code>getDirection</code> retrieves the direction vector of the ray.
-     * @return the direction of the ray.
-     */
-    public Vector3f getDirection() {
-        return direction;
-    }
-
-    /**
-     *
-     * <code>setDirection</code> sets the direction vector of the ray.
-     * @param direction the direction of the ray.
-     */
-    public void setDirection(Vector3f direction) {
-        this.direction.set(direction);
     }
 
     /**

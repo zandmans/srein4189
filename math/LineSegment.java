@@ -36,7 +36,6 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
-import com.jme3.scene.plugins.blender.animations.CalculationBone;
 import com.jme3.util.TempVars;
 import java.io.IOException;
 
@@ -54,17 +53,14 @@ import java.io.IOException;
  * @author Mark Powell
  * @author Joshua Slack
  */
-public class LineSegment implements Cloneable, Savable, java.io.Serializable {
+public class LineSegment extends AbstractShape implements Cloneable, Savable, java.io.Serializable {
 
     static final long serialVersionUID = 1;
-
-    private Vector3f origin;
-    private Vector3f direction;
     private float extent;
-
-    public LineSegment() {
-        origin = new Vector3f();
-        direction = new Vector3f();
+    
+    public LineSegment()
+    {
+    	super();
     }
 
     public LineSegment(LineSegment ls) {
@@ -98,10 +94,6 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
         this.origin = new Vector3f(ls.getOrigin());
         this.direction = new Vector3f(ls.getDirection());
         this.extent = ls.getExtent();
-    }
-
-    public float distance(Vector3f point) {
-        return FastMath.sqrt(distanceSquared(point));
     }
 
     public float distance(LineSegment ls) {
@@ -547,28 +539,12 @@ public class LineSegment implements Cloneable, Savable, java.io.Serializable {
     	return addition + fS1 * (fS1 + ((float) 2.0) * fB1) + fC;
     }
 
-    public Vector3f getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Vector3f direction) {
-        this.direction = direction;
-    }
-
     public float getExtent() {
         return extent;
     }
 
     public void setExtent(float extent) {
         this.extent = extent;
-    }
-
-    public Vector3f getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Vector3f origin) {
-        this.origin = origin;
     }
 
     // P+e*D
