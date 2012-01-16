@@ -41,8 +41,10 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.OutputCapsule;
 import com.jme3.export.Savable;
+import com.jme3.util.BufferUtils;
 import com.jme3.util.TempVars;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
 /**
  * <code>Ray</code> defines a line segment which has an origin and a direction.
@@ -398,6 +400,112 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
         vars.release();
         return len;
     }
+    
+    /**
+     * Edited by: Thijs
+     * Moved from Line.java
+     * 
+     * @param point
+     * @return
+     */
+    public float distance(Vector3f point) {
+        return FastMath.sqrt(distanceSquared(point));
+    }
+
+    /**
+     * Edited by: Thijs
+     * Moved from Line.java
+     * 
+     * @param points
+     */
+    public void orthogonalLineFit(FloatBuffer points) {
+        if (points == null) return;
+
+        TempVars vars = TempVars.get();
+
+        Vector3f compVec1 = vars.vect1;
+        Vector3f compVec2 = vars.vect2;
+        Matrix3f compMat1 = vars.tempMat3;
+        Eigen3f compEigen1 = vars.eigen;
+
+        points.rewind();
+
+        // compute average of points
+        int length = points.remaining() / 3;
+
+        BufferUtils.populateFromBuffer(origin, points, 0);
+        for (int i = 1; i < length; i++) {
+            BufferUtils.populateFromBuffer(compVec1, points, i);
+            origin.addLocal(compVec1);
+        }
+
+        origin.multLocal(1f / (float) length);
+
+        // compute sums of products
+        float sumXX = 0.0f, sumXY = 0.0f, sumXZ = 0.0f;
+        float sumYY = 0.0f, sumYZ = 0.0f, sumZZ = 0.0f;
+
+        points.rewind();
+        for (int i = 0; i < length; i++) {
+            BufferUtils.populateFromBuffer(compVec1, points, i);
+            compVec1.subtract(origin, compVec2);
+            sumXX += compVec2.x * compVec2.x;
+            sumXY += compVec2.x * compVec2.y;
+            sumXZ += compVec2.x * compVec2.z;
+            sumYY += compVec2.y * compVec2.y;
+            sumYZ += compVec2.y * compVec2.z;
+            sumZZ += compVec2.z * compVec2.z;
+        }
+
+        //find the smallest eigen vector for the direction vector
+        compMat1.m00 = sumYY + sumZZ;
+        compMat1.m01 = -sumXY;
+        compMat1.m02 = -sumXZ;
+        compMat1.m10 = -sumXY;
+        compMat1.m11 = sumXX + sumZZ;
+        compMat1.m12 = -sumYZ;
+        compMat1.m20 = -sumXZ;
+        compMat1.m21 = -sumYZ;
+        compMat1.m22 = sumXX + sumYY;
+
+        compEigen1.calculateEigen(compMat1);
+        direction = compEigen1.getEigenVector(0);
+
+        vars.release();
+    }
+
+    /**
+     *
+     * <code>random</code> determines a random point along the line.
+     * 
+     * Edited by: Thijs
+     * Moved from Line.java
+     * 
+     * @return a random point on the line.
+     */
+    public Vector3f random() {
+        return random(null);
+    }
+
+    /**
+     * <code>random</code> determines a random point along the line.
+     * 
+     * Edited by: Thijs
+     * Moved from Line.java
+     * 
+     * @param result Vector to store result in
+     * @return a random point on the line.
+     */
+    public Vector3f random(Vector3f result) {
+        if (result == null) result = new Vector3f();
+        float rand = (float) Math.random();
+
+        result.x = (origin.x * (1 - rand)) + (direction.x * rand);
+        result.y = (origin.y * (1 - rand)) + (direction.y * rand);
+        result.z = (origin.z * (1 - rand)) + (direction.z * rand);
+
+        return result;
+    }
 
     /**
      *
@@ -466,6 +574,8 @@ public final class Ray implements Savable, Cloneable, Collidable, java.io.Serial
         origin.set(source.getOrigin());
         direction.set(source.getDirection());
     }
+    
+    
 
     public String toString() {
         return getClass().getSimpleName() + " [Origin: " + origin + ", Direction: " + direction + "]";

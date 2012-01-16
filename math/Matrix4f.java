@@ -1431,6 +1431,16 @@ public final class Matrix4f extends AbstractMatrix implements Savable, Cloneable
         return store;
     }
     
+    /**
+     * Do some calculations on the current Matrix values and add these to
+     * the given matrix.
+     * 
+     * Added this function because of Code Duplication.
+     * 
+     * @author Thijs Zandvliet
+     * @param matrix
+     * @return
+     */
     public Matrix4f setMatrixContents(Matrix4f matrix)
     {
     	matrix.m00 = +m11 * fB5 - m12 * fB4 + m13 * fB3;
