@@ -220,7 +220,7 @@ public class Spline implements Savable {
         float l = 0;
         if (controlPoints.size() > 1) {
             for (int i = 0; i < controlPoints.size() - 1; i++) {
-                l = FastMath.getCatmullRomP1toP2Length(CRcontrolPoints.get(i),
+                l = Vector3f.getCatmullRomP1toP2Length(CRcontrolPoints.get(i),
                         CRcontrolPoints.get(i + 1), CRcontrolPoints.get(i + 2), CRcontrolPoints.get(i + 3), 0, 1, curveTension);
                 segmentsLength.add(l);
                 totalLength += l;
@@ -235,7 +235,7 @@ public class Spline implements Savable {
     	float l = 0;
         if (controlPoints.size() > 1) {
             for (int i = 0; i < controlPoints.size() - 1; i+=3) {
-                l = FastMath.getBezierP1toP2Length(controlPoints.get(i),
+                l = Vector3f.getBezierP1toP2Length(controlPoints.get(i),
                 		controlPoints.get(i + 1), controlPoints.get(i + 2), controlPoints.get(i + 3));
                 segmentsLength.add(l);
                 totalLength += l;
@@ -263,13 +263,13 @@ public class Spline implements Savable {
         }
         switch (type) {
             case CatmullRom:
-                FastMath.interpolateCatmullRom(value, curveTension, CRcontrolPoints.get(currentControlPoint), CRcontrolPoints.get(currentControlPoint + 1), CRcontrolPoints.get(currentControlPoint + 2), CRcontrolPoints.get(currentControlPoint + 3), store);
+                Vector3f.interpolateCatmullRom(value, curveTension, CRcontrolPoints.get(currentControlPoint), CRcontrolPoints.get(currentControlPoint + 1), CRcontrolPoints.get(currentControlPoint + 2), CRcontrolPoints.get(currentControlPoint + 3), store);
                 break;
             case Linear:
-                FastMath.interpolateLinear(value, controlPoints.get(currentControlPoint), controlPoints.get(currentControlPoint + 1), store);
+                Vector3f.interpolateLinear(value, controlPoints.get(currentControlPoint), controlPoints.get(currentControlPoint + 1), store);
                 break;
             case Bezier:
-            	FastMath.interpolateBezier(value, controlPoints.get(currentControlPoint), controlPoints.get(currentControlPoint + 1), controlPoints.get(currentControlPoint + 2), controlPoints.get(currentControlPoint + 3), store);
+            	Vector3f.interpolateBezier(value, controlPoints.get(currentControlPoint), controlPoints.get(currentControlPoint + 1), controlPoints.get(currentControlPoint + 2), controlPoints.get(currentControlPoint + 3), store);
             	break;
             case Nurb:
             	interpolateNurbs(value, store);
